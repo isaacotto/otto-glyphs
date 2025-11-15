@@ -1,5 +1,8 @@
+%! TeX program = lualatex
 
 \documentclass[twoside, 11pt]{extreport}
+\usepackage{graphicx}
+
 \usepackage{silence}
 % Silences "LaTeX Font Warning" messages
 \WarningFilter{latexfont}{Font shape}
@@ -16,70 +19,10 @@
     \interfootnotelinepenalty=10000
     \raggedbottom
 
-% \usepackage{titletoc}
-
-%     % \contentsmargin{2.55em}
-%     % \dottedcontents{section}[3.8em]{}{2.3em}{1pc}
-%     % \dottedcontents{subsection}[6.1em]{}{3.2em}{1pc}
-
-%     % \titlecontents{section}[0em]
-%     % {\vskip 0.1ex}%
-%     % {\scshape}% numbered sections formatting
-%     % {\itshape}% unnumbered sections formatting
-%     % {}%
-
-%     \contentsmargin{2.55em}
-
-%     \titlecontents{chapter}
-%      [1.5em]
-%     {\scshape}
-%     {\contentslabel{2.3em}}
-%     {\hspace*{-2.3em}}
-%     {\titlerule*[1pc]{.}\contentspage}
-%     \titlecontents{subsection}
-%     [3.8em]
-%     {} % note that 3.8 = 1.5 + 2.3
-%     {\contentslabel{3.2em}}
-%     {\hspace*{-3.2em}}
-%     {\titlerule*[1pc]{.}\contentspage}
-    
-%     \titlecontents{section}
-%     [1.5em]
-%     {\itshape}
-%     {\contentslabel{2.3em}}
-%     {\hspace*{-2.3em}}
-%     {\titlerule*[1pc]{.}\contentspage}
-%     \titlecontents{subsection}
-%     [3.8em]
-%     {} % note that 3.8 = 1.5 + 2.3
-%     {\contentslabel{3.2em}}
-%     {\hspace*{-3.2em}}
-%     {\titlerule*[1pc]{.}\contentspage}
-
-%     \titlecontents{subsection}
-%     [1.5em]
-%     {\footnotesize}
-%     {\contentslabel{2.3em}}
-%     {\hspace*{-2.3em}}
-%     {\titlerule*[1pc]{.}\contentspage}
-%     \titlecontents{subsection}
-%     [3.8em]
-%     {} % note that 3.8 = 1.5 + 2.3
-%     {\contentslabel{3.2em}}
-%     {\hspace*{-3.2em}}
-%     {\titlerule*[1pc]{.}\contentspage}
-    
-
-% \usepackage[titles]{tocloft}
-
-%     \renewcommand*\cftchapnumwidth{2em}
-%     \renewcommand*\cftsecnumwidth{3em}
-%     \renewcommand*\cftsubsecnumwidth{42pt}
 
 \usepackage{tabularray}
 
 \usepackage[hang,flushmargin]{footmisc} 
-
 
 \usepackage{microtype}
 
@@ -1101,11 +1044,11 @@ As a general rule, gestures are to be understood as unmetered unless otherwise n
 
 \clearpage
 \small
+\glsaddall
 \printglossary
 
 %\bibliographystyle{IEEEtran}
 %\bibliography{references}
-
 
 
 \end{document}

@@ -1,0 +1,7 @@
+This is makeindex, version 2.17 [TeX Live 2025] (kpathsea + Thai support).
+Scanning style file ./otto-glyphs.ist...........................done (27 attributes redefined, 0 ignored).
+Scanning input file otto-glyphs.glo....done (63 entries accepted, 0 rejected).
+Sorting entries....done (399 comparisons).
+Generating output file otto-glyphs.gls....done (97 lines written, 0 warnings).
+Output written in otto-glyphs.gls.
+Transcript written in otto-glyphs.glg.
