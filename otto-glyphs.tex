@@ -2,6 +2,10 @@
 
 \documentclass[twoside, 11pt]{extreport}
 \usepackage{graphicx}
+\usepackage{tikz}
+
+% This package removes paragraph indentation and adds space between paragraphs.
+\usepackage{parskip}
 
 \usepackage{silence}
 % Silences "LaTeX Font Warning" messages
@@ -9,7 +13,8 @@
 \WarningFilter{latexfont}{Some font shapes}
 
 % This sets the depth of the numbering in the table of contents.
-\setcounter{secnumdepth}{0}
+% \setcounter{secnumdepth}{0} % Only chapters numbered
+\setcounter{secnumdepth}{1} % Chapters and sections numbered
 
 \usepackage{titlesec}
 
@@ -27,7 +32,26 @@
 \usepackage{microtype}
 
 \usepackage{fancyhdr}
-\usepackage{glossaries}
+
+% Glossaries config
+\usepackage[nopostdot,savenumberlist=true,acronym]{glossaries-accsupp}
+\newglossarystyle{mystyle}{%
+    \setglossarystyle{list}%
+    \renewcommand*{\glossentry}[2]{%
+        \small
+        \item[\glsentryitem{##1}\glstarget{##1}{\glossentryname{##1}}]%
+        \glossentrydesc{##1}\space (##2)%
+        % \glsentryuseri{##1} % <- used to insert images
+        {
+        \ifglshasfield{useri}{##1}{\\ \noindent\makebox[\linewidth][r]{\glsentryuseri{##1}}}{}%
+        \ifglshasfield{userii}{##1}{\\ \noindent\makebox[\linewidth][r]{\glsentryuserii{##1}}}{}%
+        \ifglshasfield{useriii}{##1}{\\ \noindent\makebox[\linewidth][r]{\glsentryuseriii{##1}}}{}%
+        }
+        % Short horizontal rule centered between entries
+        % \par\noindent\makebox[\linewidth]{\rule{0.25\paperwidth}{0.4pt}}%
+    }%
+    \renewcommand*{\glsgroupskip}{}%
+}
 \usepackage{float}
 %\usepackage{hyperref}
 \usepackage{fancyhdr}
@@ -66,141 +90,229 @@
   bottom=0.75in
 }
 
+% Add space before footnote text
+\let\oldfootnote\footnote
+\renewcommand\footnote[1]{%
+\oldfootnote{\enspace #1}}
 
+% Create new command for ``translation'' footnotes:
+\newcommand{\trans}[1]{\circledfootnote{{#1}}}
+
+% ---------- circled footnote setup ----------
+\makeatletter
+% helper: draw a circle around arbitrary text (works with multi-digit numbers)
+\newcommand{\circlednum}[1]{%
+  \tikz[baseline=(char.base)] \node[draw, circle, inner sep=0.6pt, line width=0.4pt, font=\tiny] (char) {#1};%
+}
+
+% main command: prints a circled superscript at the point of use,
+% increments the footnote counter and writes an italicized footnote.
+\newcommand{\circledfootnote}[1]{%
+  \refstepcounter{footnote}% advance footnote counter (keeps hyperref anchors working)
+  \textsuperscript{\circlednum{\thefootnote}}% circled mark in the text
+  \begingroup
+    % redefine how the footnote text is typeset, so we put our circled mark
+    % at the start of the footnote and keep the body in italics.
+    \renewcommand{\@makefntext}[1]{%
+      \noindent\hangindent=1.8em\hangafter=1\circlednum{\thefootnote}\enspace ##1}%
+    \footnotetext{\textit{#1}}% the footnote body (already italicised by the argument)
+  \endgroup
+}
+\makeatother
+% ---------- end circled footnote setup ----------
 
 %%%%%%%%%%%%%%%%%%%%%%%% GLOSSARY %%%%%%%%%%%%%%%%%%%%%%%%
 % Cleaned glossary entries (all \includegraphics removed)
+\makeglossaries
+
+% \newglossaryentry{image}{name={sample image},
+%     description={an example image},
+%     user1={\protect\BeginAccSupp{Alt=
+%     {a boilerplate image used in
+%     examples}}\protect\includegraphics
+%     [height=20pt]{images/01-gliss.png}\protect\EndAccSupp{}}
+% }
+\newglossaryentry{pictograms}
+{
+    name=pictograms,
+    description={Representative icons which may be used to designate particular instruments, extended techniques, or other performance parameters.},
+    user1={%
+        \includegraphics[width=5cm]{images/05-drums2.png}
+    },
+}
+\newglossaryentry{arrow}
+{
+    name=arrow,
+    description={Indicates the continuation of a gesture articulated in the previously enclosed territory. Large decorative arrows indicate transition between one ``sound world'' and another.},
+    user1={%
+        \includegraphics[width=2.5cm]{images/11-arrowplain.png} \hspace*{1cm}
+        \includegraphics[width=1.5cm]{images/11-elaboratearrow.png}
+    },
+}
 
 \newglossaryentry{axis}
-{
+{ 
     name=axis,
-    description={Time is represented on the x-axis; pitch on the y-axis}
+    description={Time is represented on the x-axis; pitch on the y-axis.},
+    user1={\includegraphics[width=6cm]{images/axesexample.png}},
 }
 
 \newglossaryentry{box}
 {
     name=box,
-    description={Serves as a combined ``clef'' and ``key signature,'' containing information about the following gesture}
+    description={Serves as a combined ``clef'' and ``key signature,'' containing information about the following gesture. Top left contains pitch constraints, bottom right contains timbral or gestural constraints.},
+    user1={
+        \includegraphics[width=1.5cm]{images/01-box.png} \hspace*{1cm}
+        \includegraphics[width=1.5cm]{images/01-boxwithair.png} \hspace*{1cm}
+        \includegraphics[width=1.5cm]{images/01-boxwithchord.png}
+    },
 }
 
 \newglossaryentry{brackets}
 {
     name=brackets,
-    description={Indicate that a gesture is to be played ``in this manner'' rather than note-for-note}
+    description={Indicate that a gesture is to be played ``in this manner'' rather than note-for-note.},
+    user1={%
+        \includegraphics[width=2cm]{images/01-blankbracket.png} \hspace*{1cm}
+        \includegraphics[width=2.5cm]{images/01-3dotscurvebracket.png}
+    },
 }
 
 \newglossaryentry{line}
 {
     name=line,
-    description={Indicates an attack of proportional duration. Dashed vertical lines indicate points of simultaneity between two events, two players, etc}
+    description={Indicates an attack of proportional duration. Dashed vertical lines indicate points of simultaneity between two events, two players, etc.},
+    user1={\includegraphics[width=4cm]{images/02-varyingstrokeline.png}}
 }
 
-\newglossaryentry{arrow}
-{
-    name=arrow,
-    description={Indicates the continuation of a gesture as laid out in the previously enclosed territory. Large, elaborate arrows indicate transition between one ``sound world'' and another}
-}
 
 \newglossaryentry{glyphs}
 {
     name=glyphs,
-    description={Fundamental units of notation; everything besides text is considered a glyph}
+    description={Fundamental units of notation; everything besides text is considered a glyph.}
 }
 
 \newglossaryentry{dynamics}
 {
     name=dynamics,
-    description={Indicated using traditional figures (pp, mf, etc.) or by varying the thickness of the ``stroke'' of the dot, line, or curve. Attack envelopes are demonstrable using changing stroke thickness}
+    description={Indicated using traditional figures (\textit{\textbf{pp}}, \textit{\textbf{mf}}, etc.) or by varying the thickness of the ``stroke'' of the dot, line, or curve. Attack envelopes are demonstrable using changing stroke thickness.},
+    user1={\includegraphics[width=.8\textwidth]{images/02-varyingstrokecurve.png}},
 }
 
 \newglossaryentry{timbre}
 {
     name=timbre,
-    description={Changes in timbre are represented by changes in the visual texture of a dot, line, or curve}
+    description={Changes in timbre are represented by changes in the visual texture of a dot, line, or curve.},
+    user1={\includegraphics[width=6cm]{images/02-timbre2.png}}
 }
 
 \newglossaryentry{lollipop}
 {
     name=lollipop,
-    description={Used to indicate the relative presence or absence of some parameter specified in the box or elsewhere. Lollipops may be connected by a dashed line indicating a general rate of change}
+    description={Used to indicate the relative presence or absence of some parameter specified in the box or elsewhere. Lollipops may be connected by a dashed line indicating a general rate of change.},
+    user1={\includegraphics[width=3cm]{images/02-lolly1.png}}
 }
 
 \newglossaryentry{relational signs}
 {
     name=relational signs,
-    description={Come in a wide variety; indicate a specified relationship between two players, two gestures, etc. The referent is indicated with an arrow}
+    description={Come in a wide variety; indicate a specified relationship between two players, two gestures, etc. The referent is indicated with an arrow.},
+    user1={%
+        \includegraphics[width=1cm]{images/03-ignore.png} \hspace*{1cm}
+        \includegraphics[width=1cm]{images/03-dominate.png} \hspace*{1cm}
+        \includegraphics[width=1cm]{images/03-support.png}
+    },
 }
 
 \newglossaryentry{Pitched material}
 {
     name=pitched material,
-    description={May be incorporated in a number of ways, ranging from ``fully-notated'' to ``pitches and rhythms'' to ``proportional notation'' to ``pitch classes only.''}
+    description={May be incorporated in a number of ways, ranging from ``fully-notated'' to ``pitches and rhythms'' to ``proportional notation'' to ``pitch classes only.''},
+    user1={\includegraphics[width=6cm]{images/pitched3.png}}
 }
 
 \newglossaryentry{interruption}
 {
     name=interruption,
-    description={Represented by a center-less asterisk; may be ``in time'' or ``out of time'' (if bracketed)}
+    description={Represented by a center-less asterisk; may be ``in time'' or ``out of time'' (if bracketed).},
+    user1={\includegraphics[width=1cm]{images/05-interruption3.png} \hspace*{1cm} \includegraphics[width=1cm]{images/05-interruption4.png}}
 }
 
 \newglossaryentry{multiphonic}
 {
     name=multiphonic,
-    description={Represented by a pentagonal glyph with or without texture—usually attached to a line indicating duration/dynamic}
+    description={Represented by a pentagonal glyph with or without texture—usually attached to a line indicating duration/dynamic.},
+    user1={\includegraphics[width=3cm]{images/04-multiphonics3.png}}
 }
 
 \newglossaryentry{harmonic}
 {
     name=harmonic,
-    description={Represented by a small diamond glyph attached to a duration line—understood to be higher than would be indicated by location on the y-axis}
+    description={Represented by a small diamond glyph attached to a duration line—understood to be higher than would be indicated by location on the y-axis.},
+    user1={\includegraphics[width=6cm]{images/04-harmonics.png}}
 }
 
 \newglossaryentry{chord}
 {
     name=chord,
-    description={Homophonic material is represented by dots, lines, or curves striated with horizontal bands. Closed/open voicings are indicated by flags attached to the gesture}
+    description={Homophonic material is represented by dots, lines, or curves striated with horizontal bands. Closed/open voicings are indicated by flags attached to the gesture.},
+    user1={%
+        \includegraphics[width=3.5cm]{images/04-chords2.png} \hspace*{1cm}
+        \includegraphics[width=2.5cm]{images/04-chords3.png}
+    },
 }
 
 \newglossaryentry{duration}
 {
     name=duration,
-    description={May be indicated either explicitly using timestamps or proportionally using spatial extent}
+    description={May be indicated either explicitly using timestamps or proportionally using spatial extent.},
+    user1={\includegraphics[width=4cm]{images/08-dur2.png}}
 }
 
 \newglossaryentry{cue}
 {
     name=cue,
-    description={Suggested cues are indicated by stars above events or parts of events which are to occur simultaneously}
+    description={Suggested cues are indicated by stars above events or parts of events which are to occur simultaneously.},
+    user1={\includegraphics[width=1cm]{images/08-star_alone.png}}
 }
 
 \newglossaryentry{trill}
 {
     name=trill,
-    description={May be notated as a type of curve which oscillates rapidly, or using the traditional \textbf{tr} figure}
+    description={May be notated as a type of curve which oscillates rapidly, or using the traditional \textbf{tr} figure.},
+    user1={\includegraphics[width=4cm]{images/08-trill2.png}}
 }
 
 \newglossaryentry{dot}
 {
     name=dot,
-    description={A short attack}
+    description={A short attack.},
+    user1={\includegraphics[width=4cm]{images/02-varyingstrokedot.png}}
 }
 
 \newglossaryentry{curve}
 {
     name=curve,
-    description={A series of legato attacks which rises and falls according to the given contour}
+    description={A series of legato attacks which rises and falls according to the given contour.},
+    user1={\includegraphics[width=3cm]{images/01-curve2.png}}
 }
 
 \newglossaryentry{stroke}
 {
     name=stroke,
-    description={Thickness of stroke indicates relative dynamic}
+    description={See \textbf{\gls{dynamics}}.},
 }
 
 \newglossaryentry{texture}
 {
     name=texture,
-    description={The (visual) texture of a dot, line, curve, or other symbol indicates some form of timbral variation, either specified or unspecified}
+    description={See \textbf{\gls{timbre}}.},
+}
+
+\newglossaryentry{parameter}
+{
+    name=parameter,
+    description={A musical variable such as pitch, duration, timbre, dynamics, etc.},
 }
 
 %\makeglossaries
@@ -496,7 +608,7 @@ Fair warning: this introduction is somewhat wordy and boring. For those who migh
     This is all fine and good for unaccompanied performance, but the problem is complicated by the addition of multiple players who desire some form of synchrony between them. In the context of a duo, trio, etc., proportional durations tend to hold more strictly---though there is, of course, still a good deal of leeway inherent in the system. 
             %\begin{figure}[h]
             \begin{center}
-            \includegraphics[width=.8\textwidth]{images/08-dur1.png} \footnote{\textit{P1 plays open; P2 plays a single pitch which is interrupted by trills}}
+            \includegraphics[width=.8\textwidth]{images/08-dur1.png} \circledfootnote{P1 plays open; P2 plays a single pitch which is interrupted by trills}
             %\caption{P2 enters after P1}
             \end{center}
             %\end{figure}
@@ -505,14 +617,14 @@ Fair warning: this introduction is somewhat wordy and boring. For those who migh
 
             %\vspace{15pt}
             \begin{center}
-            \includegraphics[width=.6\textwidth]{images/08-dur2.png}\footnote{{\textit{develop something like this arpeggiated gesture for thirty seconds}}}
+            \includegraphics[width=.6\textwidth]{images/08-dur2.png}\circledfootnote{develop something like this arpeggiated gesture for thirty seconds}
             \end{center}
 
 When more precision is desired/required, concrete duration markers may be used to indicate the length of a particular sound/gesture. Depending on how fine-grained these marks are, though, a timekeeping device may become necessary for successful rehearsal or performance---certainly a double-edged sword.
 
             %\vspace{15pt}
             \begin{center}
-            \includegraphics[width=.9\textwidth]{images/08-dur3.png} \footnote{\textit{play in-this-manner legato passage for one minute followed by a single tone (\textbf{\textit{sfzp}}) for ten seconds}}
+            \includegraphics[width=.9\textwidth]{images/08-dur3.png} \circledfootnote{play in-this-manner legato passage for one minute followed by a single tone (\textbf{\textit{sfzp}}) for ten seconds}
             \end{center}
 
 Of course, there is no law stating that the spatial proportions of the glyphs need correspond with the temporal proportions of the sounds they represent. The above graphic illustrates an unexpected arrangement: a small improvised glyph is meant to last for a full minute while the ``longer'' single pitch which follows is a scant 10 seconds\footnote{This is perhaps not ``best practices'' when it comes to engraving technique---but it is decidedly possible. The physical realities of the score-artifact sometimes necessitate creative solutions}. Here, the onus is on the performer to determine the best way to translate the small amount of information given in the first glyph into one minute of sound.
@@ -520,13 +632,13 @@ Of course, there is no law stating that the spatial proportions of the glyphs ne
 Lastly, duration may be measured according to traditional rhythmic values (\halfNote, \quarterNote, \eighthNote). Glyphs lend themselves to being embedded in traditional notation quite easily---as such, one might find improvisatory gestures occupying staves alongside traditional figures.
 
             \begin{center}
-            \includegraphics[width=.9\textwidth]{images/09-measure.png} 
+                \includegraphics[width=.9\textwidth]{images/09-measure.png}\circledfootnote{play the melodic figure as written, then improvise freely for one measure of~\lilyTimeSignature{4}{4}, first getting louder, then softer.}
             \end{center}
 
 Here, context tells us that the empty set of brackets occupies one full measure of \lilyTimeSignature{4}{4}. Predictably, the composer sacrifices creative leeway here for metric precision. Further, labels may aid in specifying the precise duration of a figure in a rhythmic context, as in the figure below.
 
             \begin{center}
-            \includegraphics[width=.9\textwidth]{images/09-partialmeasure.png}\footnote{\textit{open improvisation for a fixed duration (a dotted half-note) in the context of a metric grid}}
+            \includegraphics[width=.9\textwidth]{images/09-partialmeasure.png}\circledfootnote{open improvisation for a fixed duration (a dotted half-note) in the context of a metric grid}
             \end{center}
 
 
@@ -539,7 +651,9 @@ Here, context tells us that the empty set of brackets occupies one full measure 
     \section[The box]{The box\\\small\textit{gesture-sculpting parameters}}
 
             \begin{center}
-            \includegraphics[scale=0.3]{images/01-box.png}\footnote{\textit{empty box; no indications}} \includegraphics[scale=0.3]{images/01-boxwithchord.png}\footnote{\textit{play what follows over [imagined] A$\flat$ major chord}} \includegraphics[scale=0.3]{images/01-boxwithair.png}\footnote{\textit{the amount of air in your tone will change over the course of this gesture}}
+            \includegraphics[scale=0.3]{images/01-box.png}\circledfootnote{empty box; no indications}
+            \includegraphics[scale=0.3]{images/01-boxwithchord.png}\circledfootnote{play what follows over [imagined] A$\flat$ major chord}
+            \includegraphics[scale=0.3]{images/01-boxwithair.png}\circledfootnote{the amount of air in your tone will change over the course of this gesture}
             \end{center}
             
         The \textbf{\gls{box}} (sometimes \textbf{box-with-a-slash}) which precedes gestural glyphs serves as a sort of combined ``clef'' and ``key signature'' which may contain modifiers affecting the following gestures. Sometimes its presence merely indicates the beginning of a new group of gestures or a new sound- or process-concept and is thus left empty. 
@@ -551,7 +665,9 @@ Here, context tells us that the empty set of brackets occupies one full measure 
     \section[Bracket notation]{Bracket notation\\\small\textit{a means of modifying gesture's fixity}}
 
     \begin{center}
-    \includegraphics[width=.25\textwidth]{images/01-blankbracket.png}\footnote{\textit{open improvisation}} \includegraphics[width=.3\textwidth]{images/01-demobracket.png}\footnote{\textit{play something like this combination of attacks}} \includegraphics[width=.4\textwidth]{images/01-demobracket2.png}\footnote{\textit{play something like this combination of attacks}}
+    \includegraphics[width=.25\textwidth]{images/01-blankbracket.png}\circledfootnote{{open improvisation}} 
+    \includegraphics[width=.3\textwidth]{images/01-demobracket.png}\circledfootnote{{play something like this combination of attacks}} 
+    \includegraphics[width=.4\textwidth]{images/01-demobracket2.png}\circledfootnote{{play something like this combination of attacks}}
     \end{center}
 
         Simple \textbf{\gls{brackets}} are one of our most valuable tools for sculpting an improvised performance. The difference between an un-bracketed and a bracketed gesture is subtle, but makes all the difference in the world. In essence: any time brackets appear, they should be read as: \textbf{play something \textit{in this manner}}. How precisely \textbf{\textit{in this manner}} is interpreted will of course differ greatly between performers. For instance: Where this figure...
@@ -571,7 +687,7 @@ Here, context tells us that the empty set of brackets occupies one full measure 
         Occasionally a player might run across \textbf{empty brackets}. These serve to indicate that improvisation is essentially unrestricted (except with respect to total duration). Exceptions occur when the empty brackets span only part of the vertical axis... 
 
             \begin{center}
-            \includegraphics[width=.8\textwidth]{images/05-territory.png}\footnote{\textit{open improvisation across different registers of the instrument, but all over an [imagined] E $\flat$ diminished chord}}
+            \includegraphics[width=.8\textwidth]{images/05-territory.png}\circledfootnote{{open improvisation across different registers of the instrument, but all over an [imagined] E $\flat$ diminished chord}}
             \end{center}
         
         \noindent which suggest open improvisation emphasizing one portion of the instrument's register. 
@@ -579,7 +695,7 @@ Here, context tells us that the empty set of brackets occupies one full measure 
         Often, bracketed sections will be extended across the time-axis using a thin, dark \gls{arrow}---especially when only minimal information need be provided in the brackets themselves. This arrow indicates that play continues for the duration. No particular ``development'' of performed material need occur over the duration, though neither is it expressly forbidden.
 
             \begin{center}
-            \includegraphics[width=.5\textwidth]{images/01-extarrow.png}\footnote{\textit{repeat something like this \textbf{\textit{pp}} to \textbf{\textit{mp}} gesture until double bar line}}
+            \includegraphics[width=.5\textwidth]{images/01-extarrow.png}\circledfootnote{{repeat something like this \textbf{\textit{pp}} to \textbf{\textit{mp}} gesture until double bar line}}
             \end{center}
 
 \newpage
@@ -602,7 +718,7 @@ Here, context tells us that the empty set of brackets occupies one full measure 
         I will take care to describe curves in more detail as I take it that despite the intuitiveness of a simple melodic contour, they are apt to be misunderstood. A curve across a given territory has a start, middle, and end point 
 
             \begin{center}
-            \includegraphics[width=.4\textwidth]{images/01-basiccurve.png}\footnote{\textit{begin high, descend rapidly, end in middle register}}
+            \includegraphics[width=.4\textwidth]{images/01-basiccurve.png}\circledfootnote{{begin high, descend rapidly, end in middle register}}
             \end{center}
 
 
@@ -610,7 +726,8 @@ Here, context tells us that the empty set of brackets occupies one full measure 
         \noindent and might be simple or more complex.
         
             \begin{center}
-            \includegraphics[width=.2\textwidth]{images/01-simplecurve.png}\footnote{\textit{begin quiet, ascend, then rapidly descend while getting louder}} \hspace{25pt} \includegraphics[width=.4\textwidth]{images/01-complexcurve.png}\footnote{\textit{follow this approximate contour}}
+            \includegraphics[width=.2\textwidth]{images/01-simplecurve.png}\circledfootnote{{begin quiet, ascend, then rapidly descend while getting louder}} \hspace{25pt} 
+            \includegraphics[width=.4\textwidth]{images/01-complexcurve.png}\circledfootnote{{follow this approximate contour}}
             \end{center}
             
             \noindent A curve not otherwise marked could be performed either as a legato stream of notes \textbf{or} as a ``true glissando'' following \textit{roughly} the contour indicated. 
@@ -637,7 +754,7 @@ Here, context tells us that the empty set of brackets occupies one full measure 
 
             %\vspace{15pt}
             \begin{center}
-            \includegraphics[width=.5\textwidth]{images/08-trill1.png}\footnote{\textit{play something like these rhythms; trill over the longest tone}}
+            \includegraphics[width=.5\textwidth]{images/08-trill1.png}\circledfootnote{{play something like these rhythms; trill over the longest tone}}
             \end{center}
 
         
@@ -667,7 +784,7 @@ Here, context tells us that the empty set of brackets occupies one full measure 
             %\vspace{15pt}
 
             \begin{center}
-            \includegraphics[width=.9\textwidth, angle=1.75]{images/02-thinline.png}
+                \includegraphics[width=.9\textwidth, angle=1.75]{images/02-thinline.png}\circledfootnote{long and short attacks on one pitch; two longer legato lines followed by several more attacks on a higher pitch}
             \end{center}
             
 \newpage
@@ -676,13 +793,16 @@ Here, context tells us that the empty set of brackets occupies one full measure 
     Variations in \gls{stroke} width are often used to indicate specific \textbf{attack envelopes}. These can of course be combined with \textbf{curves}. Below, in no particular order, are a sampling of various possible attack envelopes. The first eight are seen on a single pitch; the final two combine changing attack envelopes with curves/trills.
 
         \begin{center}
-        \begin{tabular}{cc}
-        \includegraphics[width=.25\textwidth]{images/10-env1.png} & \includegraphics[width=.25\textwidth]{images/10-env2.png} \\
-        \includegraphics[width=.25\textwidth]{images/10-env3.png} & \includegraphics[width=.25\textwidth]{images/10-env4.png} \\
-        \includegraphics[width=.25\textwidth]{images/10-env5.png} & \includegraphics[width=.25\textwidth]{images/10-env6.png} \\
-        \includegraphics[width=.25\textwidth]{images/10-env10.png} & \includegraphics[width=.4\textwidth]{images/10-env7.png} \\
-        \includegraphics[width=.4\textwidth]{images/10-env8.png} & \includegraphics[width=.4\textwidth]{images/10-env9.png} 
-        \end{tabular}
+        \begingroup
+            \renewcommand{\arraystretch}{4} % Default value: 1
+            \begin{tabular}{cc}
+            \includegraphics[width=.25\textwidth]{images/10-env1.png} & \includegraphics[width=.25\textwidth]{images/10-env2.png} \\
+            \includegraphics[width=.25\textwidth]{images/10-env3.png} & \includegraphics[width=.25\textwidth]{images/10-env4.png} \\
+            \includegraphics[width=.25\textwidth]{images/10-env5.png} & \includegraphics[width=.25\textwidth]{images/10-env6.png} \\
+            \includegraphics[width=.25\textwidth]{images/10-env10.png} & \includegraphics[width=.4\textwidth]{images/10-env7.png} \\
+            \includegraphics[width=.4\textwidth]{images/10-env8.png} & \includegraphics[width=.4\textwidth]{images/10-env9.png} 
+            \end{tabular}
+        \endgroup
         \end{center}
 
     %\vspace{15pt}
@@ -730,11 +850,11 @@ Here, context tells us that the empty set of brackets occupies one full measure 
         %\vspace{15pt}
 
             \begin{center}
-            \includegraphics[width=.8\textwidth]{images/02-timbre1.png}\footnote{\textit{from left to right: change timbre on a single pitch at a fixed dynamic; change timbre on a single pitch while getting louder; change timbre in the middle of a short attack; change timbre twice over the course of this legato phrase}}
+            \includegraphics[width=.8\textwidth]{images/02-timbre1.png}\circledfootnote{{from left to right: change timbre on a single pitch at a fixed dynamic; change timbre on a single pitch while getting louder; change timbre in the middle of a short attack; change timbre twice over the course of this legato phrase}}
             \end{center}
 
             \begin{center}
-            \includegraphics[width=.6\textwidth]{images/02-timbre2.png}\footnote{\textit{change timbre multiple times throughout this long-tone}}
+            \includegraphics[width=.6\textwidth]{images/02-timbre2.png}\circledfootnote{{change timbre multiple times throughout this long-tone}}
             \end{center}
 
             
@@ -760,7 +880,7 @@ Here, context tells us that the empty set of brackets occupies one full measure 
             %\vspace{15pt}
 
             \begin{center}
-            \includegraphics[width=.4\textwidth]{images/02-sim.png}\footnote{\textit{play this contour then (without a pause) jump down to a steady low pitch}}
+            \includegraphics[width=.4\textwidth]{images/02-sim.png}\circledfootnote{{play this contour then (without a pause) jump down to a steady low pitch}}
             \end{center}
         
        \noindent Without the dashed line in the figure above, it would be difficult to see at a glance if appreciable space exists between the low tone and the high one---thus a line is used to show that the high tone should follow immediately rather than after a short rest.
@@ -771,7 +891,7 @@ Here, context tells us that the empty set of brackets occupies one full measure 
 
 
             \begin{center}
-            \includegraphics[width=.7\textwidth]{images/08-star.png}\footnote{Here a star marks a potential cue point where precise simultaneous re-entry might be difficult otherwise}
+                \includegraphics[width=.7\textwidth]{images/08-star.png}\circledfootnote{Player 1 begins while Player 2 rests. Player 2 plays three short attacks at an unspecified position. Then, following a rest, both players re-enter simultaneously at the star.}
             \end{center}
 
     \newpage
@@ -781,7 +901,9 @@ Here, context tells us that the empty set of brackets occupies one full measure 
             %\vspace{15pt}
             
             \begin{center}
-            \includegraphics[width=.5\textwidth]{images/02-lolly1.png}\footnote{\textit{an undefined parameter increases while this simple pitch contour is performed}} \hspace{15pt} \includegraphics[width=.5\textwidth]{images/02-lolly2.png}\footnote{\textit{an undefined parameter oscillates on a single pitch in an in-this-manner bracket}}
+            \includegraphics[width=.5\textwidth]{images/02-lolly1.png}\circledfootnote{{an undefined parameter increases while this simple pitch contour is performed}}
+            \hspace{15pt}
+            \includegraphics[width=.5\textwidth]{images/02-lolly2.png}\circledfootnote{{an undefined parameter oscillates on a single pitch in an in-this-manner bracket}}
             \end{center}
 
 
@@ -797,14 +919,14 @@ Here, context tells us that the empty set of brackets occupies one full measure 
 
             %\vspace{15pt}
             \begin{center}
-            \includegraphics[width=.8\textwidth]{images/02-lolly3.png}\footnote{\textit{a parameter decreases over the course of a legato phrase; the same parameter begins again in the middle of a staccato passage and remains constant}}
+            \includegraphics[width=.8\textwidth]{images/02-lolly3.png}\circledfootnote{{a parameter decreases over the course of a legato phrase; the same parameter is specified again in the middle of a staccato passage and remains constant}}
             \end{center}
             
         As shown in the graphic below, two simultaneous changing parameters are relatively easy to deploy as long as both are clearly labelled. I suspect that attempting to represent more than two parameters would render a passage unwieldy and would perhaps best be saved for a different sort of compositional practice.
 
             %\vspace{15pt}
             \begin{center}
-            \includegraphics[width=.9\textwidth]{images/02-lolly5.png}\footnote{\textit{a single pitch is altered by two parameters: noisiness is represented by the top lollipop since it's given in the box; vibrato is represented by the bottom lollypop and is defined by the tag to the left}}
+            \includegraphics[width=.9\textwidth]{images/02-lolly5.png}\circledfootnote{{a single pitch has two parameters modified: noisiness is represented by the top lollipop since it's given in the box; vibrato is represented by the bottom lollypop and is defined by the tag to the left}}
             \end{center}
 
     \newpage
@@ -866,52 +988,53 @@ Here, context tells us that the empty set of brackets occupies one full measure 
 
 \noindent ...and here are some potentially powerful but as-yet-unused examples:
 
+\begingroup
     \begin{center}
         \textbf{unused (but interesting) examples}
         
         \vspace{10pt}
-    \footnotesize
-    \begin{tblr}{
-        width=\textwidth,
-        cells={valign=m, halign=l},
-        colspec={X[4] | X[4] | X[6]},
-        column{1}={halign=r},
-        column{2}={halign=c}
-        }
-        $\vcenter{\includegraphics[width=.25\textwidth]{images/03-louder.png}}$ & \textit{louder/softer} & \\
-        $\vcenter{\includegraphics[width=.25\textwidth]{images/03-denser.png}}$ & \textit{denser/rarer} & \\
-        $\vcenter{\includegraphics[width=.2\textwidth]{images/03-higher.png}}$ & \textit{higher/lower} & \\
-        $\vcenter{\includegraphics[width=.2\textwidth]{images/03-purer.png}}$ & \textit{purer/noisier} & \\
-        $\vcenter{\includegraphics[width=.2\textwidth]{images/03-faster.png}}$ & \textit{faster/slower} & \\
-        $\vcenter{\includegraphics[width=.1\textwidth]{images/03-decompose.png}}$ & \textit{decompose x} & perform \textit{x} but with ``pieces missing'' or in some way incomplete or broken-down \\
-        $\vcenter{\includegraphics[width=.2\textwidth]{images/03-exaggerate.png}}$ & \textit{exaggerate x} & perform \textit{x} but in some way exaggerated (wider contours, louder, etc.) \\
-        $\vcenter{\includegraphics[width=.2\textwidth]{images/03-rhythmicize.png}}$ & \textit{rhythmicize x} & perform \textit{x} but now conforming to some sort of rhythmic grid \\
-        $\vcenter{\includegraphics[width=.2\textwidth]{images/03-rubato.png}}$ & \textit{rubato x} & perform \textit{x} but now without regard to a rhythmic grid \\
-        $\vcenter{\includegraphics[width=.15\textwidth]{images/03-multiply.png}}$ & \textit{multiply x} & take a fragmentary gesture \textit{x} and multiply it indefinitely \\
-        $\vcenter{\includegraphics[width=.15\textwidth]{images/03-counterpoint.png}}$ & \textit{counterpoint x} & provide counterpoint (rhythmically, pitch-wise, timbrally) to \textit{x}
-    \end{tblr}
-    \end{center}
+        \footnotesize
+        \begin{tblr}{
+            width=\textwidth,
+            cells={valign=m, halign=l},
+            colspec={X[4] | X[4] | X[6]},
+            column{1}={halign=l},
+            column{2}={halign=l}
+            }
+            $\vcenter{\includegraphics[width=.25\textwidth]{images/03-louder.png}}$ & \textit{louder/softer} & \\
+            $\vcenter{\includegraphics[width=.25\textwidth]{images/03-denser.png}}$ & \textit{denser/rarer} & \\
+            $\vcenter{\includegraphics[width=.2\textwidth]{images/03-higher.png}}$ & \textit{higher/lower} & \\
+            $\vcenter{\includegraphics[width=.2\textwidth]{images/03-purer.png}}$ & \textit{purer/noisier} & \\
+            $\vcenter{\includegraphics[width=.2\textwidth]{images/03-faster.png}}$ & \textit{faster/slower} & \\
+            $\vcenter{\includegraphics[width=.1\textwidth]{images/03-decompose.png}}$ & \textit{decompose x} & perform \textit{x} but with ``pieces missing'' or in some way incomplete or broken-down \\
+            $\vcenter{\includegraphics[width=.2\textwidth]{images/03-exaggerate.png}}$ & \textit{exaggerate x} & perform \textit{x} but in some way exaggerated (wider contours, louder, etc.) \\
+            $\vcenter{\includegraphics[width=.2\textwidth]{images/03-rhythmicize.png}}$ & \textit{rhythmicize x} & perform \textit{x} but now conforming to some sort of rhythmic grid \\
+            $\vcenter{\includegraphics[width=.2\textwidth]{images/03-rubato.png}}$ & \textit{rubato x} & perform \textit{x} but now without regard to a rhythmic grid \\
+            $\vcenter{\includegraphics[width=.15\textwidth]{images/03-multiply.png}}$ & \textit{multiply x} & take a fragmentary gesture \textit{x} and multiply it indefinitely \\
+            $\vcenter{\includegraphics[width=.15\textwidth]{images/03-counterpoint.png}}$ & \textit{counterpoint x} & provide counterpoint (rhythmically, pitch-wise, timbrally) to \textit{x}
+        \end{tblr}
+        \end{center}
+\endgroup
+
 
     \newpage
     
     In context, the relational sign will be placed at the bottom-left of an accompanying gesture and will use an \gls{arrow} to indicate its point of reference, be it another player's gesture or one's own.
     
-
-        
             \begin{center}
-            \includegraphics[width=.4\textwidth]{images/05-relation1.png}\footnote{\textit{build upon previous gesture}}
+            \includegraphics[width=.4\textwidth]{images/05-relation1.png}\circledfootnote{{build upon previous gesture}}
             \end{center}
 
             \vspace{15pt}
 
             \begin{center}
-            \includegraphics[width=.4\textwidth]{images/05-relation2.png}\footnote{\textit{ignore other player's gesture}}
+            \includegraphics[width=.4\textwidth]{images/05-relation2.png}\circledfootnote{{ignore other player's gesture}}
             \end{center}
 
             \vspace{15pt}
             
             \begin{center}
-            \includegraphics[width=.4\textwidth]{images/05-relation3.png}\footnote{\textit{echo other player's gesture}}
+            \includegraphics[width=.4\textwidth]{images/05-relation3.png}\circledfootnote{{echo other player's gesture}}
             \end{center}
 
 \newpage
@@ -923,7 +1046,7 @@ Here, context tells us that the empty set of brackets occupies one full measure 
         %\vspace{15pt}
 
             \begin{center}
-            \includegraphics[width=.9\textwidth]{images/06-Artboard 3.png}\footnote{\textit{over a D major chord play a falling gesture followed by three staccato attacks, then play something like the given chords, then play this accelerando gesture on A3}}
+            \includegraphics[width=.9\textwidth]{images/06-Artboard 3.png}\circledfootnote{{over a D major chord play a falling gesture followed by three staccato attacks, then play something like the given chords, then play this accelerando gesture on A3}}
             \end{center}        
 
             A central goal of this system is a more-or-less seamless integration of traditionally notated materials with new open glyphs.
@@ -931,13 +1054,13 @@ Here, context tells us that the empty set of brackets occupies one full measure 
            \textbf{\Gls{Pitched material}} may be incorporated in several ways. Rarely, notation may be included which is fully rendered with meter, tempo, dynamics, etc. However, more commonly, several of these factors are omitted in favor of fixed pitches to be played in a given order but with no rhythmic/durational information. Other times, no order is specified.
            
                 \begin{center}
-                \includegraphics[width=.75\textwidth]{./images/non_specific_pitches.png}\footnote{\textit{play something using these pitches with no particular rhythm}}
+                \includegraphics[width=.75\textwidth]{./images/non_specific_pitches.png}\circledfootnote{{play something using these pitches with no particular rhythm}}
                 \end{center}
             
            In instances where rhythms are given, these rhythms are to be performed proportionally unless otherwise noted.
 
             \begin{center}
-            \includegraphics[width=.9\textwidth]{images/06-Artboard 2.png}\footnote{\textit{play something like these pitches/rhythms proportionally---\\i.e. not necessarily in sync with anyone else}}
+            \includegraphics[width=.9\textwidth]{images/06-Artboard 2.png}\circledfootnote{{play something like these pitches/rhythms proportionally (not necessarily in sync with anyone else)}}
             \end{center}
 
 
@@ -948,14 +1071,14 @@ Here, context tells us that the empty set of brackets occupies one full measure 
 
             %\vspace{15pt}
             \begin{center}
-            \includegraphics[width=.6\textwidth]{images/03-rest.png}\footnote{\textit{one interrupted pitch followed by a long rest}}
+            \includegraphics[width=.6\textwidth]{images/03-rest.png}\circledfootnote{{one interrupted pitch followed by a long rest}}
             \end{center}        
 
             Often, players will see eighth-, quarter-, half-, and whole-rests ``floating'' amidst other open glyphs. Unless otherwise marked, these \textbf{floating rests} are to be understood as ``psychological'' proportional indicators rather than as concrete durational values---i.e. eighth = quite short rest, quarter = longer rest, whole = quite long rest, etc.
             
             %\vspace{15pt}
             \begin{center}
-            \includegraphics[width=.9\textwidth]{images/03-rest2.png}\footnote{\textit{play this gesture with rests of various proportional lengths}}
+            \includegraphics[width=.9\textwidth]{images/03-rest2.png}\circledfootnote{{play this gesture with rests of various proportional lengths}}
             \end{center}        
 
 \newpage
@@ -966,12 +1089,12 @@ Here, context tells us that the empty set of brackets occupies one full measure 
 
             %\vspace{15pt}
             \begin{center}
-            \includegraphics[width=.5\textwidth]{images/03-repeat1.png}\footnote{\textit{repeat this long-short-long figure}}
+            \includegraphics[width=.5\textwidth]{images/03-repeat1.png}\circledfootnote{{repeat this long-short-long figure}}
             \end{center}
 
             %\vspace{15pt}
             \begin{center}
-            \includegraphics[width=.5\textwidth]{images/03-repeat2.png}\footnote{\textit{``in the manner of'' a repetition of this staccato-then-single-tone phrase}}
+            \includegraphics[width=.5\textwidth]{images/03-repeat2.png}\circledfootnote{{``in the manner of'' a repetition of this staccato-then-single-tone phrase}}
             \end{center}
 
 \newpage
@@ -982,7 +1105,7 @@ Here, context tells us that the empty set of brackets occupies one full measure 
 
             %\vspace{15pt}
             \begin{center}
-            \includegraphics[width=.9\textwidth]{images/03-transition.png}\footnote{\textit{transition rather quickly from a mix of longer and shorter attacks to consistent short attacks in a narrow pitch band}}
+            \includegraphics[width=.9\textwidth]{images/03-transition.png}\circledfootnote{{transition rather quickly from a mix of longer and shorter attacks to consistent short attacks in a narrow pitch band}}
             \end{center}  
 
 \newpage
@@ -1015,7 +1138,7 @@ As a general rule, gestures are to be understood as unmetered unless otherwise n
 
             %\vspace{15pt}
             \begin{center}
-            \includegraphics[width=.2\textwidth]{images/08-met4.png}\footnote{\textit{as usual, an arrow will be used to indicate the point of reference for the \textbf{match x} relational sign}}
+            \includegraphics[width=.2\textwidth]{images/08-met4.png}\footnote{As usual, an arrow will be used to indicate the point of reference for the \textbf{match x} relational sign.}
             \end{center}  
 
 \newpage
@@ -1050,13 +1173,15 @@ As a general rule, gestures are to be understood as unmetered unless otherwise n
         Homophonic gestures (that is, gestures which are primarily composed of vertically-stacked harmonies rather than monophonic single-note lines) present a unique challenge to notation in this scheme, given the scheme's reliance on essentially one-dimensional simple linear figures. As such, generically homophonic material is shown using \textbf{striated dots and contours} which are \gls{texture}d with \textbf{parallel, left-to-right oriented bands}.
         
             \begin{center}
-            \includegraphics[width=.9\textwidth]{images/04-chords.png}\footnote{\textit{from left to right: long, chordal attack, quite loud; legato figure composed of chords; three short chordal attacks; wider-range chordal legato figure}}
+            \includegraphics[width=.9\textwidth]{images/04-chords.png}\circledfootnote{{from left to right: long, chordal attack, quite loud; legato figure composed of chords; three short chordal attacks; wider-range chordal legato figure}}
             \end{center}  
             
     As usual, the approximate range of the gesture is given by its position on the y-axis. Note that the striations themselves do not give any particular information as to the intervallic content or chord voicing---these properties, if constrained at all, will be given elsewhere; usually in the accompanying \gls{box} or attached to the gesture with a flag. To this end, a widely-spaced staffless half-note \gls{chord} indicates that the player should favor more open voicings. Converseley, a clustered half-note chord points to tighter, closed voicings.
 
             \begin{center}
-            \includegraphics[width=.4\textwidth]{images/04-chords2.png}\footnote{\textit{descending chordal legato passage primarily using ``closed'' or ``cluster'' voicings}} \hspace {15pt} \includegraphics[width=.4\textwidth]{images/04-chords3.png}\footnote{\textit{loud-soft-loud gesture using ``open'' (widely spaced) voicings}}
+            \includegraphics[width=.4\textwidth]{images/04-chords2.png}\circledfootnote{{descending chordal legato passage primarily using ``closed'' or ``cluster'' voicings}}
+            \hspace {15pt}
+            \includegraphics[width=.4\textwidth]{images/04-chords3.png}\circledfootnote{{loud-soft-loud gesture using ``open'' (widely spaced) voicings}}
             \end{center}  
 
 \newpage
@@ -1068,7 +1193,9 @@ As a general rule, gestures are to be understood as unmetered unless otherwise n
         \subsection{Harmonics}
 
             \begin{center}
-            \includegraphics[width=.8\textwidth]{images/04-harmonics.png}\footnote{\textit{plain, unbroken harmonics}} \hspace {15pt} \includegraphics[scale=0.3]{images/04-harmonics2.png}\footnote{\textit{a ``morse-code'' ---i.e. mixed long and short attacks---harmonic}}
+            \includegraphics[width=.8\textwidth]{images/04-harmonics.png}\circledfootnote{{plain, unbroken harmonics}} 
+            \hspace {15pt}
+            \includegraphics[scale=0.3]{images/04-harmonics2.png}\circledfootnote{{a ``morse-code'' ---i.e. mixed long and short attacks---harmonic}}
             \end{center} 
 
             Harmonics are indicated by a \textbf{diamond} glyph preceding a duration line. As \gls{harmonic}s tend to be considerably higher than stopped pitches, the harmonic figure in essence temporarily overrides the prescribed range and should be understood to be high- or low-pitch in relation to other harmonics present.
@@ -1078,13 +1205,17 @@ As a general rule, gestures are to be understood as unmetered unless otherwise n
         \subsection{Double-stops et al.}
 
             \begin{center}
-            \includegraphics[width=0.7\textwidth]{images/04-doublestops.png}\footnote{\textit{a double stop on a single pitch which is interrupted toward the end of the gesture}} \hspace {15pt} \includegraphics[width=0.5\textwidth]{images/04-doublestops2.png}\footnote{\textit{a double stop which begins and returns to a single pitch}}
+            \includegraphics[width=0.7\textwidth]{images/04-doublestops.png}\circledfootnote{{a double stop on a single pitch which is interrupted toward the end of the gesture}} 
+            \hspace {15pt}
+            \includegraphics[width=0.5\textwidth]{images/04-doublestops2.png}\circledfootnote{{a double stop which begins and returns to a single pitch}}
             \end{center}
 
             Double/triple/etc. stops are, predictably, indicated by \textbf{multiple concurrent duration lines}. They may move in parallel or in contrary motion and may feature distinct attack envelopes, etc.
 
             \begin{center}
-            \includegraphics[width=0.5\textwidth]{images/04-doublestops3.png}\footnote{\textit{a double stop which peaks in intensity toward the middle of the gesture}} \hspace {15pt} \includegraphics[width=0.4\textwidth]{images/04-doublestops4.png}\footnote{\textit{a triple stop using a C-augmented pitch set which rapidly ascends and gets louder}}
+            \includegraphics[width=0.5\textwidth]{images/04-doublestops3.png}\circledfootnote{{a double stop which peaks in intensity toward the middle of the gesture}}
+            \hspace {15pt}
+            \includegraphics[width=0.4\textwidth]{images/04-doublestops4.png}\circledfootnote{{a triple stop using a C-augmented pitch set which rapidly ascends and gets louder}}
             \end{center}
 
 \newpage
@@ -1096,14 +1227,14 @@ As a general rule, gestures are to be understood as unmetered unless otherwise n
             Multiphonics are indicated by a unique glyph (borrowed from Braxton's ``Language Music'' scheme) preceding the duration line. In the absence of other direction, \gls{multiphonic}s should be chosen based on the figure's position on the y-axis. 
 
             \begin{center}
-            \includegraphics[width=0.4\textwidth]{images/04-multiphonics2.png} \hspace {15pt} \includegraphics[width=0.4\textwidth]{images/04-multiphonics3.png}\footnote{\textit{two discrete multiphonics in approximately the same register and with the same dynamic}}
+            \includegraphics[width=0.4\textwidth]{images/04-multiphonics2.png} \hspace {15pt} \includegraphics[width=0.4\textwidth]{images/04-multiphonics3.png}\circledfootnote{{two discrete multiphonics in approximately the same register and with the same dynamic}}
             \end{center}
 
             \noindent In some instances, unspecified but \textbf{discrete} multiphonics are desired. In this case, the initial glyph will be \gls{texture}d using ``timbral change'' glyph textures. These distinctions are local to the gesture, similar to changes in \textbf{timbre (section 2.7)}---i.e. the multiphonic signified by the hatched symbol need not be consistent across the entire piece; only until the \textbf{box} clef indicates the start of a new gesture.
 
             %\vspace{15pt}
             \begin{center}
-            \includegraphics[width=.5\textwidth]{images/04-multiphonics4.png}\footnote{\textit{three discrete multiphonics at different dynamics}}
+            \includegraphics[width=.5\textwidth]{images/04-multiphonics4.png}\circledfootnote{{three discrete multiphonics at different dynamics}}
             \end{center}
             
 \newpage
@@ -1113,7 +1244,7 @@ As a general rule, gestures are to be understood as unmetered unless otherwise n
         \subsection{Mutes}
 
             \begin{center}
-            \includegraphics[width=.9\textwidth]{images/mutelolly.png}\footnote{\textit{interrupted attack(s) on a single pitch while opening/closing the mute}}
+            \includegraphics[width=.9\textwidth]{images/mutelolly.png}\circledfootnote{{interrupted attack(s) on a single pitch while opening/closing the mute}}
             \end{center}
 
             The use of mutes is certainly permitted/encouraged in the absence of other instructions. Sometimes, though, the use of a plunger-style (\textbf{dynamic}) mute is called for expressly in the score in the \textbf{southeast} corner of \textbf{the \gls{box}} (``+mute''), in which case a \textbf{\gls{lollipop}} will indicate the extent/velocity of mute movement.
@@ -1150,10 +1281,10 @@ As a general rule, gestures are to be understood as unmetered unless otherwise n
 
     \subsection{Other percussion}
 
-    ``Custom'' pictograms may serve a valuable role in efficiently communicating a desired technique. Shown below are just a few that have been deployed in past pieces.
+        Custom \gls{pictograms} may serve a valuable role in efficiently communicating a desired technique. Shown below are just a few that have been deployed in past pieces.
 
             \begin{center}
-            \includegraphics[width=.9\textwidth]{images/percussionpictograms.png}\footnote{Left in box: various sticks/mallets; center: various cymbals/drums; right: bow}
+            \includegraphics[width=.9\textwidth]{images/percussionpictograms.png}\footnote{Left in box: various sticks/mallets\\Center: various cymbals/drums\\Right: bow}
             \end{center}
 
 
@@ -1175,14 +1306,16 @@ As a general rule, gestures are to be understood as unmetered unless otherwise n
     One solution might be to more concretely map graphic \gls{texture}s to sonic ones. For example, one might encode the process of increasing grain size (for a granular synthesis patch) with a less-and-less-dense field of dots filling in a pitch curve. Perhaps the presence or absence of white noise in a signal could be signified by shades of gray. These are, of course, kindergarten-level analogies which do not even approach the level of sophistication possible with modern electronic instruments. Nevertheless, work will continue in this arena as opportunities to compose for electronicists present themselves.
 
     \subsection{Movement}
+    Notations for movement and gesture in dance and theater (Labanotation, Benesh Movement Notation, Eshkol-Wachman Movement Notation, etc.) are well-established (if sparsely used), but were not designed to emphasize improvisation or simultaneous music-and-movement performance. Otto-Glyphs lends itself to adaptation for movement-based performance, particularly in cases where performers move and play simultaneously.
 
 %        \subsection{A more robust tablature}
 
 %        [forthcoming]
 
 \clearpage
-\small
-\glsaddall
+
+\setglossarystyle{mystyle}
+
 \printglossary
 
 % \bibliographystyle{IEEEtran}
