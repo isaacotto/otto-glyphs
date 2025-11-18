@@ -1,8 +1,12 @@
 %! TeX program = lualatex
 
-\documentclass[twoside, 11pt]{extreport}
+\documentclass[twoside, 11pt]{book}
 \usepackage{graphicx}
 \usepackage{tikz}
+\usepackage{booktabs}
+
+\usepackage{xcolor}
+\definecolor{darkred}{rgb}{0.6,0,0}
 
 % Custom command to place an image in an fbox with a gray border of 4pt
 \newcommand{\glyphborder}[2][]{%
@@ -38,6 +42,7 @@
 % Silences "LaTeX Font Warning" messages
 \WarningFilter{latexfont}{Font shape}
 \WarningFilter{latexfont}{Some font shapes}
+\WarningFilter{latex}{Command}
 
 % This sets the depth of the numbering in the table of contents.
 % \setcounter{secnumdepth}{0} % Only chapters numbered
@@ -45,12 +50,11 @@
 
 \usepackage{titlesec}
 
-    \titleformat*{\section}{\large\scshape}
-    \titleformat*{\subsection}{\normalsize\itshape}
+    \titleformat*{\section}{\large\bfseries}
+    \titleformat*{\subsection}{\large\itshape}
     
-    \interfootnotelinepenalty=10000
-    \raggedbottom
-
+    % \interfootnotelinepenalty=10000
+    % \raggedbottom
 
 \usepackage{tabularray}
 
@@ -92,12 +96,11 @@
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage[font=small,labelfont=bf]{caption}
 
-%\usepackage[T1]{fontenc}
-%\usepackage{tgbonum} %<- nice, 80s looking typeface
+% \usepackage[T1]{fontenc}
+% \usepackage{tgbonum} %<- nice, 80s looking typeface
 
-%\usepackage[scale=1]{tgadventor} % or helvet
 %\usepackage[scale=1]{tgadventor}
-%\renewcommand{\familydefault}{\sfdefault}
+\renewcommand{\familydefault}{\sfdefault}
 
 
 \usepackage{geometry}
@@ -112,10 +115,10 @@
   paperheight=8.5in,
   paperwidth=5.5in,
   heightrounded,
-  left=0.75in,
-  right=0.75in,
+  left=0.5in,
+  right=0.5in,
   top=0.85in,
-  bottom=0.75in
+  bottom=0.65in
 }
 
 % Add space before footnote text
@@ -144,7 +147,7 @@
     % redefine how the footnote text is typeset, so we put our circled mark
     % at the start of the footnote and keep the body in italics.
     \renewcommand{\@makefntext}[1]{%
-      \noindent\hangindent=1.8em\hangafter=1\circlednum{\thefootnote}\enspace ##1}%
+    \noindent\hangindent=1.8em\hangafter=1\circlednum{\thefootnote}\enspace{\color{darkred} ##1}\vspace{0.5em}}%
     \footnotetext{\textit{#2}}% the footnote body (already italicised by the argument)
   \endgroup
 }
@@ -167,7 +170,7 @@
     name=pictograms,
     description={Representative icons which may be used to designate particular instruments, extended techniques, or other performance parameters.},
     user1={%
-        \glyphborder[width=5cm]{images/05-drums2.png}
+        \glyphborder[width=2.5cm]{images/percussionpictograms01.png}
     },
 }
 \newglossaryentry{arrow}
@@ -184,7 +187,7 @@
 { 
     name=axis,
     description={Time is represented on the x-axis; pitch on the y-axis.},
-    user1={\glyphborder[width=6cm]{images/axesexample.png}},
+    user1={\glyphborder[width=0.5\textwidth]{images/axesexample.png}},
 }
 
 \newglossaryentry{box}
@@ -271,14 +274,14 @@
 \newglossaryentry{multiphonic}
 {
     name=multiphonic,
-    description={Represented by a pentagonal glyph with or without texture—usually attached to a line indicating duration/dynamic.},
+    description={Represented by a pentagonal glyph with or without texture---usually attached to a line indicating duration/dynamic.},
     user1={\glyphborder[width=3cm]{images/04-multiphonics3.png}}
 }
 
 \newglossaryentry{harmonic}
 {
     name=harmonic,
-    description={Represented by a small diamond glyph attached to a duration line—understood to be higher than would be indicated by location on the y-axis.},
+    description={Represented by a small diamond glyph attached to a duration line---understood to be higher than would be indicated by location on the y-axis.},
     user1={\glyphborder[width=4cm]{images/04-harmonics.png}}
 }
 
@@ -377,12 +380,24 @@
     {\fontsize{32}{36}\bfseries On the Use and Interpretation of Otto-Glyphs\par}
     \rule{\textwidth}{1pt}\par
     \vspace{.3in}
-    {\LARGE\scshape A Brief Primer on a Novel\\Notation Scheme for\\Improvising Musicians\par}
+    {\LARGE\scshape a brief primer on a novel\\notation scheme for\\improvising musicians\par}
     \vspace{.75in}
     {\huge Isaac Otto\par}
     \vfill
     {\LARGE \texttt{v.1.4 | November 2025}\par}
 \end{titlepage}
+
+% Create a copyright page
+\newpage
+\thispagestyle{empty}
+\vspace*{\fill}
+\begin{center}
+    \textcopyright~2023 Isaac Otto. All rights reserved.
+\end{center}    
+\vspace*{\fill}
+\newpage
+
+\pagenumbering{roman}
 
 \tableofcontents
 %\thispagestyle{firstpage}
@@ -390,33 +405,33 @@
     %\setstretch{1.25} (maybe better?)
 \setlength{\marginparwidth}{50pt}
 
+\newpage
+\pagenumbering{arabic}
 
 \chapter{Introduction}
 \label{ch:intro}
 
-\newpage
+% Fair warning: this introduction is somewhat wordy and boring. For those who might like to skip straight to the meat of the matter---descriptions of the glyphs themselves begin in \textbf{Chapter \ref{ch:global}}. For the rest of you, please allow the following diversion into the impetus behind this project. 
 
-Fair warning: this introduction is somewhat wordy and boring. For those who might like to skip straight to the meat of the matter---descriptions of the glyphs themselves begin in \textbf{Chapter \ref{ch:global}}. For the rest of you, please allow the following diversion into the impetus behind this project. 
+    \section{Who is this manual for?}
 
-    \section*{What is this manual for?}
-
-        This small booklet is intended to serve as a general primer introducing performers to a still-developing style of music notation. As much as is possible, I will attempt to spare the reader from paragraphs of ``manifesto''-style pontificating on the whys and wherefores of improvisatory notation and get right to the point: learning to interpret these novel glyphs in the context of a performance. Having said this: if you'll permit me, I'll begin with a brief explanation of the motivation behind the ``system,'' followed by illustrated definitions and contextual examples of the various glyphs which make up its fundamental units. These are organized from most generally-applicable to most specific. Crucially, this is an \textit{ongoing project}. Symbols are apt to change, be added, subtracted, and refined as is deemed necessary for each new piece. This booklet is a snapshot of the state of the project as of Spring 2023 but may (and ought to!) change as rehearsal and performance reveal new desiderata.
+    This small booklet is intended to serve as a general primer introducing performers to a still-developing style of music notation. As much as is possible, I will attempt to spare the reader from paragraphs of ``manifesto''-style pontificating on the whys and wherefores of improvisatory notation and get right to the point: learning to interpret these novel glyphs in the context of a performance. Having said this: if you'll permit me, I'll begin with a brief explanation of the motivation behind the ``system,'' followed by illustrated definitions and contextual examples of the various glyphs which make up its fundamental units. These are organized from most generally-applicable to most specific. Crucially, this is an \textit{ongoing project}. Symbols are apt to change, be added, subtracted, and refined as is deemed necessary for each new piece. This booklet is a snapshot of the state of the project as of Spring 2023 but may (and ought to!) change as rehearsal and performance reveal new desiderata.
     
      %       \begin{itemize}
       %          \item Half manifesto, half primer to get ready to rehearse and perform using this s%         \item After introducing my underlying first principles, we'll first talk through glyphs which you'll find essentially in every context, followed by glyphs which could be considered ``instrument-specific''.
         %        \item Crucially, this is an \textit{ongoing project}. Symbols change and are added, subtracted, and refined as is needed for each new piece. This booklet is a snapshot of the state of the project as of December 2022, but may change (and \textit{should} change) to suit the needs of rehearsal and performance as time goes on.
        %     \end{itemize}
 
-        \section*{Connotative/denotative notation schemes\\\small\textit{how it feels vs. what it says}}
+    \section{Connotative/denotative notation schemes: how it feels vs. what it says}
 
-    In the realm of ``graphic'' notation (or, as I prefer, ``neonotation'') there are, broadly considered, two sometimes-intersecting modes of performer engagement: ``connotative'' and ``denotative'' notation schemes. \textbf{Connotative} notation is what I imagine most would think of when the term ``graphic notation'' is mentioned. Perhaps the ur-example of connotative notation is Cornelius Cardew's \textit{Treatise} (1963-67): a sprawling, 193-page score featuring evocatively transfigured staff lines, stems, and beams; stretched nearly beyond recognition into undulating patterned dots, curves, and geometric figures. Famously, Cardew provided no concrete rule-set to facilitate the interpretation of these glyphs. Rather, performers were forced to rely on the connotative content of the symbols themselves to inform their performance tactics---thereby rendering each interpretation a wholly unique ``translation'' of the visual artifact of the score. While Cardew's intent was not necessarily to score \textit{for improvisers}, many 21st-century improv-focused composers take the same tack when crafting their works.
+    In the realm of ``graphic'' notation (or, as I prefer, neonotation) there are, broadly considered, two sometimes-intersecting modes of performer engagement: ``connotative'' and ``denotative'' notation schemes. \textbf{Connotative} notation is what I imagine most would think of when the term ``graphic notation'' is mentioned. Perhaps the ur-example of connotative notation is Cornelius Cardew's \textit{Treatise} (1963-67): a sprawling, 193-page score featuring evocatively transfigured staff lines, stems, and beams; stretched nearly beyond recognition into undulating patterned dots, curves, and geometric figures. Famously, Cardew provided no concrete rule-set to facilitate the interpretation of these glyphs. Rather, performers were forced to rely on the connotative content of the symbols themselves to inform their performance tactics---thereby rendering each interpretation a wholly unique ``translation'' of the visual artifact of the score. While Cardew's intent was not necessarily to score \textit{for improvisers}, many 21st-century improv-focused composers take the same tack when crafting their works.
 
     On the other hand, there exist a small number of more-or-less well-defined \textbf{denotative} notation schemes which imbue their symbols (``graphic'' or otherwise) with enough semantic content that a performer can consistently interpret them from performance to performance. Of these, traditional notation is by far the most prevalent (if trivial) example. However, some recent composers have developed as part of their compositional practice new, robust notational symbologies which have the ability to---for instance---stand in for otherwise unwieldy traditional notation or to constrain the sonic output of improvising musicians (Horatiu Radulescu's ``little devils'' and Anthony Braxton's ``Language Music'' scheme jump to mind). The fledgling system I describe here is decidedly of this latter category. 
     
     Of course, in practice, no system of notation is ever \textit{wholly} connotative or denotative. Since notational symbols are invariably designed to be interpreted by human beings, even the most spartan set of symbols will convey some ``extra-semantic'' meaning over the course of their reading. An angrily-scrawled four-bar passage of quarter-notes has the potential to impart a decidedly different ``flavor'' to the performer (and thereby to the audience) than one that has been delicately engraved on copper plates. As such, a composer who wields a system of graphic notation must always take care to consider potential connotative interpretations of his/her marks on the page.
 
         
-        \section*{What this notation is NOT:}
+    \section{What this notation is not}
 
     This notation is decidedly \textit{not} an attempt to replicate the function of traditional notation. There have been, over the past hundred years or so, several systems which purport to improve upon the venerable five-line staff and its finicky stems, beams, and accidentals. Approaches include giving each chromatic half step $1/12$ of a four-line staff\footnote{See ``Dodeka Notation.''} or switching over to ``stacks'' of six-line octaves\footnote{Various systems shown at \\ \url{https://musicnotation.org/systems/}} in order to do away with flats and sharps entirely. While these may be of some interest to pedagogical min-maxers, traditional notation is, at the end of the day, plenty good enough for its intended purpose.
 
@@ -429,7 +444,7 @@ Fair warning: this introduction is somewhat wordy and boring. For those who migh
     %           \item Not a tool for achieving ``accuracy'' or ``sonic fidelity'' between performances!
     %       \end{itemize}
             
-        \section*{What this notation IS:}
+    \section{What this notation might be}
 
     Given that we have at our disposal a perfectly serviceable system of extant music notation with which to express our sound- and process-concepts as composers, why burden already-stressed musicians with the responsibility of learning a new set of symbols?
    
@@ -446,12 +461,12 @@ Fair warning: this introduction is somewhat wordy and boring. For those who migh
     
     %        \begin{itemize}
     %           \item A means of improving communications between composers and improvisers
-    %            \item A means of creatively “sculpting” (or “constraining,” if you like) the space of improvisation
+    %            \item A means of creatively ``sculpting'' (or ``constraining,'' if you like) the space of improvisation
     %            \item A means of capturing the gestural essentials of a piece of music (either already-real or as-yet-to-exist)
-    %            \item A means of manipulating \textit{gestural fixity itself} as an independent variable — a way of deliberately scrapping the fixed/open binary
+    %            \item A means of manipulating \textit{gestural fixity itself} as an independent variable --- a way of deliberately scrapping the fixed/open binary
     %        \end{itemize}
 
-        \section*{Conducted improvisation v. Otto-Glyphs}
+        \section{Conducted improvisation vs. Otto-Glyphs}
 
         Many readers will, no doubt, be familiar with at least one of the two popular conducted improvisation methodologies: Butch Morris' ``Conduction'' and Walter Thompson's ``Soundpainting''. To be clear, I will not do these twin systems the justice they deserve by fully explicating their various strengths here. For our purposes, it suffices to say that both systems (which I'll generically lump together as lower-case-c ``conduction'' practices) achieve in real-time many of the tasks I hope to accomplish on the page. To wit: these systems (despite a fascinating measure of ideological opposition between them which I'll explore in some depth in my forthcoming dissertation) both employ a similar demi-hierarchic structure. A ``conductor'' or ``soundpainter'' faces their ensemble and employs a series of predetermined or improvised hand (etc.) gestures which serve as both compulsions to act and as modifiers for said action. One gesture might gently proffer an empty sonic canvas on which a performer might compose---another might radically reduce the improvisatory materials available to a player---a third might force one player's gesture to supervene on another. This polysemic quasi-notation is, in this way, distinct among notations. With a few notable exceptions, notation typically assumes that performance ``begins'' with the null set ($\emptyset$). Traditional notational markings conjure sound from the void; without them, there is only silence. Conduction and Soundpainting certainly have the capacity to function similarly: fine-grained hand gestures exist which may serve to specify particular pitch classes, rhythms, tempi, etcetera. Their radical difference, however, is their ability to bring about the opposite condition (with the wave of a hand, no less!): the composer's medium becomes the set-of-all-sets. That is to say, when the performer is invited to improvise ``freely,'' the composer acts by paring down this now-expanded horizon of sonic potential. We might imagine the difference-in-kind between the sculptor who shapes a clay vessel---\textit{ex nihilo}---by accretion, and the one who---\textit{ex omnis}---pares down a block of alabaster which contains the potential for \textit{all forms}. Conducted improvisation has the unique ability to, in real time, oscillate between and combine these two creative paradigms. In short, this creative synthesis is similiarly the burning core of my project.
 
@@ -459,38 +474,36 @@ Fair warning: this introduction is somewhat wordy and boring. For those who migh
         
         Thus, if the friendly reader is having trouble coming to grips with the general contours of my motivations, it may behoove them to consider this an extension of the intellectual tradition but forward by Morris/Thomson---only committed to paper. In lieu of a real-time participant, the composer (barring his direct musical contribution as an instrumentalist) is relegated to his traditional, silent role; merely setting an elaborate stage for future dialectical collaboration.
         
-        \section*{Priorities\\\small\textit{the importance of disobedience}}
+    \section{Priorities: the importance of disobedience}
 
     Before delving into the specifics that you, the musician, will encounter on the page, I would like to offer one final qualification which hopefully sheds some light on my priorities:
     
     %While a simple, flexible system such as this one could be deployed in many different ways to suit many different purposes and while, indeed, it is conceivable that one could use the symbols here to merely reproduce the classic hierarchy of composer-over-performer, my goal is precisely the opposite: to build upon the ethos inherent in improvised musics which emphasize co-composition and the \textbf{primacy of the moment}. 
     Any simple, flexible system of notation such as the one I've sought to realize here could certainly be deployed to suit a wide variety of musical/procedural aims. Indeed, it is conceivable that one might, given the right inclination, use this open notation to merely reproduce the traditional composer-over-performer hierarchic paradigm. My goal, however, is precisely the opposite: to build upon the ethos inherent in improvised musics which emphasize co-composition and the \textbf{primacy of the moment}.
     
-    That is to say: in performance, musical situations will inevitably arise which seem to demand a gestural contribution that runs counter to what is “prescribed” in the notation. Perhaps the prescribed dynamic is far too timid for the latent energy of the passage; perhaps a sudden rim shot on the floor tom would propel the music into beautiful new territory---a situation unforeseeable prior to performance. As I conceive of it, the primacy of the moment-in-performance \textbf{demands} that the player heed these calls by making a contribution which deliberately ``disobeys'' that which has been laid out by the composer ahead of time. The notation has already “done its job,” so to speak, by sculpting the perceived boundaries of improvisation---it is still incumbent upon \textit{performers} to make the music. I trust the good taste and musical sense of the performer over my prescriptive compositional ability any day. Thus, the performer should allow her in-the-moment judgements to supplement and/or override notational prescriptions should the music demand it. Improvised music is decisively a quasi-democratic pursuit---performers should not be shy about \textit{improvising their musico-social roles} as well as the music itself.
+    That is to say: in performance, musical situations will inevitably arise which seem to demand a gestural contribution that runs counter to what is ``prescribed'' in the notation. Perhaps the prescribed dynamic is far too timid for the latent energy of the passage; perhaps a sudden rim shot on the floor tom would propel the music into beautiful new territory---a situation unforeseeable prior to performance. As I conceive of it, the primacy of the moment-in-performance \textbf{demands} that the player heed these calls by making a contribution which deliberately ``disobeys'' that which has been laid out by the composer ahead of time. The notation has already ``done its job,'' so to speak, by sculpting the perceived boundaries of improvisation---it is still incumbent upon \textit{performers} to make the music. I trust the good taste and musical sense of the performer over my prescriptive compositional ability any day. Thus, the performer should allow her in-the-moment judgements to supplement and/or override notational prescriptions should the music demand it. Improvised music is decisively a quasi-democratic pursuit---performers should not be shy about \textit{improvising their musico-social roles} as well as the music itself.
 
     Now: without any more delay, let's talk about what will show up on the page.
 
-    	
 \setcounter{footnote}{0}
 
-        
- 
 \chapter{Global concepts; all-purpose glyphs}
 \label{ch:global}
+
 \newpage
 
-    \section[Axes]{Axes\\\small\textit{the territory upon which we organize gesture}}
+    \section[Axes]{Axes: the territory on which we organize gesture}
 
             %\begin{figure}[h]
             
-            %\vspace{15pt}
+            
             \begin{center}
             \glyphborder[width=.9\textwidth]{images/axesexample.png}\footnote{When appropriate, I will include italic ``translations'' of the given figures into plain English for reference. In this case, we have \textit{two \textbf{\textit{sfzp}} attacks followed by three \textbf{\textit{p}} staccato attacks and a single \textbf{\textit{pp}} attack}}
             %\caption{A basic illustration of (normally invisible) axes}
             \end{center}
             %\end{figure}
 
-        Groups of \gls{glyphs} are read in what I take to be the most intuitive, natural direction for performers accustomed to traditional notation schemes. Predictably, our x-\gls{axis} is time, which advances from left to right. Time may be encoded in different ways to suit the needs of the piece. In some instances, precise second-to-second changes are specified and are duly marked with time-stamps---necessitating the use of a timekeeping device or more familiarity with the flow of the piece. More often, however, time proceeds ``proportionally,'' whereby the duration of a gesture is only indicated in relation to the overall length of the group of gestures on the page. Performance situations will dictate how long a (for example) two-centimeter-long gesture takes to execute, but as a general rule, a one-centimeter-long gesture should take around half as long. For more information, consult Section 2.2 (\textbf{Duration}).
+        Groups of \gls{glyphs} are read in what I take to be the most intuitive, natural direction for performers accustomed to traditional notation schemes. Predictably, our x-\gls{axis} is time, which advances from left to right. Time may be encoded in different ways to suit the needs of the piece. In some instances, precise second-to-second changes are specified and are duly marked with time-stamps---necessitating the use of a timekeeping device or more familiarity with the flow of the piece. More often, however, time proceeds ``proportionally,'' whereby the duration of a gesture is only indicated in relation to the overall length of the group of gestures on the page. Performance situations will dictate how long a (for example) two-centimeter-long gesture takes to execute, but as a general rule, a one-centimeter-long gesture should take around half as long. For more information, consult Section~\ref{sec:duration} on \textbf{Duration}.
 
         The y-axis encodes ``pitch range,'' or, if you like, ``range of spectral content'' which is mapped to the parameters of one's instrument (tempered, of course, by the musician's ability and desires). Generally speaking, glyphs toward the top of the specified territory symbolize higher pitch or spectral content while those toward the bottom symbolize lower frequencies.
 
@@ -502,44 +515,43 @@ Fair warning: this introduction is somewhat wordy and boring. For those who migh
         
     \newpage
     
-    \section[Duration]{Duration\\\small\textit{proportional vs. measured}}
+    \section[Duration]{Duration: proportional vs. measured}
+    \label{sec:duration}
 
     The duration of a given gesture or individual glyph can be represented in three different ways: \textbf{proportionally}, using \textbf{time stamps} or using \textbf{traditional rhythmic values}. By far the most common method under this scheme is to approach duration \textit{loosely} proportionally. Unlike strict proportional notation where the length of a note (gesture, etc.) on the page has a direct one-to-one correlation with the length of the resulting sound\footnote{See, for instance, Berio's original manuscript for \textit{Sequenza I} for unaccompanied flute}, under this scheme durational stretching and squashing is left up to the performer.
 
     This is all fine and good for unaccompanied performance, but the problem is complicated by the addition of multiple players who desire some form of synchrony between them. In the context of a duo, trio, etc., proportional durations tend to hold more strictly---though there is, of course, still a good deal of leeway inherent in the system. 
-            %\begin{figure}[h]
             \begin{center}
-            \glyphborder[width=.8\textwidth]{images/08-dur1.png} \circledfootnote{P1 plays open; P2 plays a single pitch which is interrupted by trills}
+            \glyphborder[width=.65\textwidth]{images/08-dur1.png} \trans{P1 plays open; P2 plays a single pitch which is interrupted by trills}
             %\caption{P2 enters after P1}
             \end{center}
-            %\end{figure}
 
     In the above example, given that there is no additional information present, the precise duration of the bracketed figure is negotiated in real time by Player One (empty bracket) and Player Two (trilling single pitch). Player Two in effect determines the midpoint of the gesture by deciding when to enter. Upon Player Two's entry, Player One then has a strong hint as to when she should conclude her improvisation. This style of notation, of course, works best in small ensembles and when the composer prioritizes performer input and coordination over maximum replicability from performance to performance.
 
-            %\vspace{15pt}
+            
             \begin{center}
-            \glyphborder[width=.6\textwidth]{images/08-dur2.png}\circledfootnote{develop something like this arpeggiated gesture for thirty seconds}
+            \glyphborder[width=.6\textwidth]{images/08-dur2.png}\trans{develop something like this arpeggiated gesture for thirty seconds}
             \end{center}
 
 When more precision is desired/required, concrete duration markers may be used to indicate the length of a particular sound/gesture. Depending on how fine-grained these marks are, though, a timekeeping device may become necessary for successful rehearsal or performance---certainly a double-edged sword.
 
-            %\vspace{15pt}
+            
             \begin{center}
-            \glyphborder[width=.8\textwidth]{images/08-dur3.png} \circledfootnote{play in-this-manner legato passage for one minute followed by a single tone (\textbf{\textit{sfzp}}) for ten seconds}
+            \glyphborder[width=.8\textwidth]{images/08-dur3.png} \trans{play in-this-manner legato passage for one minute followed by a single tone (\textbf{\textit{sfzp}}) for ten seconds}
             \end{center}
 
-Of course, there is no law stating that the spatial proportions of the glyphs need correspond with the temporal proportions of the sounds they represent. The above graphic illustrates an unexpected arrangement: a small improvised glyph is meant to last for a full minute while the ``longer'' single pitch which follows is a scant 10 seconds\footnote{This is perhaps not ``best practices'' when it comes to engraving technique---but it is decidedly possible. The physical realities of the score-artifact sometimes necessitate creative solutions}. Here, the onus is on the performer to determine the best way to translate the small amount of information given in the first glyph into one minute of sound.
+Of course, there is no mandate that the spatial proportions of the glyphs need correspond with the temporal proportions of the sounds they represent. The above graphic illustrates an unexpected arrangement: a small improvised glyph is meant to last for a full minute while the ``longer'' single pitch which follows is a scant 10 seconds\footnote{This is perhaps not ``best practices'' when it comes to engraving technique---but it is decidedly possible. The physical realities of the score-artifact sometimes necessitate creative solutions}. Here, the onus is on the performer to determine the best way to translate the small amount of information given in the first glyph into one minute of sound.
 
 Lastly, duration may be measured according to traditional rhythmic values (\halfNote, \quarterNote, \eighthNote). Glyphs lend themselves to being embedded in traditional notation quite easily---as such, one might find improvisatory gestures occupying staves alongside traditional figures.
 
             \begin{center}
-                \glyphborder[width=.9\textwidth]{images/09-measure.png}\circledfootnote{play the melodic figure as written, then improvise freely for one measure of~\lilyTimeSignature{4}{4}, first getting louder, then softer.}
+                \glyphborder[width=.65\textwidth]{images/09-measure.png}\trans{play the melodic figure as written, then improvise freely for one measure of~\lilyTimeSignature{4}{4}, first getting louder, then softer.}
             \end{center}
 
 Here, context tells us that the empty set of brackets occupies one full measure of \lilyTimeSignature{4}{4}. Predictably, the composer sacrifices creative leeway here for metric precision. Further, labels may aid in specifying the precise duration of a figure in a rhythmic context, as in the figure below.
 
             \begin{center}
-            \glyphborder[width=.9\textwidth]{images/09-partialmeasure.png}\circledfootnote{open improvisation for a fixed duration (a dotted half-note) in the context of a metric grid}
+            \glyphborder[width=.65\textwidth]{images/09-partialmeasure.png}\trans{open improvisation for a fixed duration (a dotted half-note) in the context of a metric grid}
             \end{center}
 
 
@@ -549,38 +561,33 @@ Here, context tells us that the empty set of brackets occupies one full measure 
 
 \newpage
 
-    \section[The box]{The box\\\small\textit{gesture-sculpting parameters}}
+    \section[The box]{The box: our clef}
 
             \begin{center}
-            \glyphborder[scale=0.2]{images/01-box.png}\circledfootnote{empty box; no indications}
-            \glyphborder[scale=0.2]{images/01-boxwithchord.png}\circledfootnote{play what follows over [imagined] A$\flat$ major chord}
-            \glyphborder[scale=0.2]{images/01-boxwithair.png}\circledfootnote{the amount of air in your tone will change over the course of this gesture}
+            \glyphborder[scale=0.12]{images/01-box.png}\trans{empty box; no indications}
+            \glyphborder[scale=0.12]{images/01-boxwithchord.png}\trans{play what follows over [imagined] A$\flat$ major chord}
+            \glyphborder[scale=0.12]{images/01-boxwithair.png}\trans{the amount of air in your tone will change over the course of this gesture}
             \end{center}
             
         The \textbf{\gls{box}} (sometimes \textbf{box-with-a-slash}) which precedes gestural glyphs serves as a sort of combined ``clef'' and ``key signature'' which may contain modifiers affecting the following gestures. Sometimes its presence merely indicates the beginning of a new group of gestures or a new sound- or process-concept and is thus left empty. 
         
-        In the case of the box-with-a-slash, the \textbf{northwest} corner tends to be reserved for parameters which constrain pitch content (e.g. lead sheet symbols like \textbf{E$\flat\Delta{\sharp \textbf{11}}$}, mode indications like \textbf{G Dorian}, or other, more specialized marks\footnote{In the past I have used \textbf{XXIV} to indicate the incorporation of the 24-tone equal-tempered scale---i.e. quarter-tones}. Specific indications here should be spelled out specifically in the performance notes from piece to piece. The \textbf{southeast} corner, on the other hand, is usually used for modifiers which will change in degree or intensity over the course of the gesture group (e.g. amount of air in the sound, amount of ``growl,'' degree of \textit{sul ponticello}, mute position, etc.). For more information see Section 2.9 (\textbf{Lollipops}). 
+        In the case of the box-with-a-slash, the \textbf{northwest} corner tends to be reserved for parameters which constrain pitch content (e.g. lead sheet symbols like \textbf{E$\flat\Delta{\sharp \textbf{11}}$}, mode indications like \textbf{G Dorian}, or other, more specialized marks\footnote{In the past I have used \textbf{XXIV} to indicate the incorporation of the 24-tone equal-tempered scale---i.e. quarter-tones}. Specific indications here should be spelled out specifically in the performance notes from piece to piece. The \textbf{southeast} corner, on the other hand, is usually used for modifiers which will change in degree or intensity over the course of the gesture group (e.g. amount of air in the sound, amount of ``growl,'' degree of \textit{sul ponticello}, mute position, etc.). For more information see Section~\ref{sec:lollipops} on \textbf{Lollipops and parameter changes}.
 
 \newpage
 
-    \section[Bracket notation]{Bracket notation\\\small\textit{a means of modifying gesture's fixity}}
+    \section[Bracket notation]{Bracket notation: changing a sign's fixity}
 
     \begin{center}
-    \glyphborder[width=.25\textwidth]{images/01-blankbracket.png}\circledfootnote{{open improvisation}} 
-    \glyphborder[width=.3\textwidth]{images/01-demobracket.png}\circledfootnote{{play something like this combination of attacks}} 
-    \glyphborder[width=.4\textwidth]{images/01-demobracket2.png}\circledfootnote{{play something like this combination of attacks}}
+    \glyphborder[width=.25\textwidth]{images/01-blankbracket.png}\trans{{open improvisation}} 
+    \glyphborder[width=.3\textwidth]{images/01-demobracket.png}\trans{{play something like this combination of attacks}} 
+    \glyphborder[width=.4\textwidth]{images/01-demobracket2.png}\trans{{play something like this combination of attacks}}
     \end{center}
 
-        Simple \textbf{\gls{brackets}} are one of our most valuable tools for sculpting an improvised performance. The difference between an un-bracketed and a bracketed gesture is subtle, but makes all the difference in the world. In essence: any time brackets appear, they should be read as: \textbf{play something \textit{in this manner}}. How precisely \textbf{\textit{in this manner}} is interpreted will of course differ greatly between performers. For instance: Where this figure...
+        Simple \textbf{\gls{brackets}} are one of our most valuable tools for sculpting an improvised performance. The difference between an un-bracketed and a bracketed gesture is subtle, but makes all the difference in the world. In essence: any time brackets appear, they should be read as: \textbf{play something \textit{in this manner}}. How precisely \textbf{\textit{in this manner}} is interpreted will of course differ greatly between performers. For instance: Where the following figure indicates \textit{three short attacks and a brief legato passage} across a particular duration, its bracketed counterpart...
 
             \begin{center}
-            \glyphborder[width=.35\textwidth]{images/01-3dotscurve.png} 
-            \end{center}
-        
-        \noindent indicates \textit{three short attacks and a brief legato passage} across a particular duration, its bracketed counterpart
-
-            \begin{center}
-            \glyphborder[width=.35\textwidth]{images/01-3dotscurvebracket2.png} 
+            \glyphborder[width=.25\textwidth]{images/01-3dotscurve.png}
+            \glyphborder[width=.25\textwidth]{images/01-3dotscurvebracket2.png} 
             \end{center}
         
         \noindent asks the performer to play using these \textit{sorts of} gestures for the duration indicated by the brackets/arrows. Rather than specify certain sounds in certain orders, the bracketed gesture gives a player a sort of ``sonic territory'' to occupy for a given time. The player ought to feel more ``freedom'' with respect to the execution of the material therein than with the more cut-and-dry plain gestures.
@@ -588,7 +595,7 @@ Here, context tells us that the empty set of brackets occupies one full measure 
         Occasionally a player might run across \textbf{empty brackets}. These serve to indicate that improvisation is essentially unrestricted (except with respect to total duration). Exceptions occur when the empty brackets span only part of the vertical axis... 
 
             \begin{center}
-            \glyphborder[width=.8\textwidth]{images/05-territory.png}\circledfootnote{{open improvisation across different registers of the instrument, but all over an [imagined] E $\flat$ diminished chord}}
+            \glyphborder[width=.6\textwidth]{images/05-territory.png}\trans{{open improvisation across different registers of the instrument, but all over an [imagined] E $\flat$ diminished chord}}
             \end{center}
         
         \noindent ...which suggest open improvisation emphasizing one portion of the instrument's register. 
@@ -596,46 +603,39 @@ Here, context tells us that the empty set of brackets occupies one full measure 
         Often, bracketed sections will be extended across the time-axis using a thin, dark \gls{arrow}---especially when only minimal information need be provided in the brackets themselves. This arrow indicates that play continues for the duration. No particular ``development'' of performed material need occur over the duration, though neither is it expressly forbidden.
 
             \begin{center}
-            \glyphborder[width=.5\textwidth]{images/01-extarrow.png}\circledfootnote{{repeat something like this \textbf{\textit{pp}} to \textbf{\textit{mp}} gesture until double bar line}}
+            \glyphborder[width=.5\textwidth]{images/01-extarrow.png}\trans{{repeat something like this \textbf{\textit{pp}} to \textbf{\textit{mp}} gesture until double bar line}}
             \end{center}
 
 \newpage
 
         
 
-    \section[Dots, lines, and curves]{Dots, lines, and curves\\\small\textit{the fundamental quanta of gesture}}
-
-    %\vspace{15pt}
-    
-            \begin{center}
-            \glyphborder[width=.3\textwidth]{images/01-3dotscurvebracket2.png}
-            \hspace{25pt}
-            \glyphborder[width=.4\textwidth]{images/01-demobracket3.png} 
-            \end{center}
-            
-            
-        The most basic notational sub-units in this scheme are \textbf{\gls{dot}s, \gls{line}s, and \gls{curve}s}. Dots (being in essence very short lines) indicate single short attacks at a particular time (or with a particular density...) Precise attack envelopes (staccato, staccatissimo, tenuto, etc.) are, unless otherwise specified, left to the player's discretion as best befits the performance.
+\section[Dots, lines, and curves]{Dots, lines, and curves: the basic building blocks of gesture}
 
         Straight horizontal lines indicate longer attacks. In the case of percussive or non-sustaining instruments, these might be interpreted as a single attack which decays for the duration or as a stream of attacks in that given pitch-space. 
+    
+            \begin{center}
+            \glyphborder[width=.3\textwidth]{images/01-3dotscurvebracket2.png}\trans{(in the manner of) three short attacks followed by a brief legato passage} \hspace{25pt}
+            \glyphborder[width=.4\textwidth]{images/01-demobracket3.png}\trans{(in the manner of) three short attacks, a long low note, two more short attacks, and a pause}
+            \end{center}
+            
 
         I will take care to describe curves in more detail as I take it that despite the intuitiveness of a simple melodic contour, they are apt to be misunderstood. A curve across a given territory has a start, middle, and end point...
 
             \begin{center}
-            \glyphborder[width=.25\textwidth]{images/01-basiccurve.png}\circledfootnote{{begin high, descend rapidly, end in middle register}}
+            \glyphborder[width=.25\textwidth]{images/01-basiccurve.png}\trans{{begin high, descend rapidly, end in middle register}}
             \end{center}
-
-
             
         \noindent ...and might be simple or more complex.
         
             \begin{center}
-            \glyphborder[width=.2\textwidth]{images/01-simplecurve.png}\circledfootnote{{begin quiet, ascend, then rapidly descend while getting louder}} \hspace{25pt} 
-            \glyphborder[width=.3\textwidth]{images/01-complexcurve.png}\circledfootnote{{follow this approximate contour}}
+            \glyphborder[width=.2\textwidth]{images/01-simplecurve.png}\trans{{begin quiet, ascend, then rapidly descend while getting louder}} \hspace{25pt} 
+            \glyphborder[width=.3\textwidth]{images/01-complexcurve.png}\trans{{follow this approximate contour}}
             \end{center}
             
             \noindent A curve not otherwise marked could be performed either as a legato stream of notes \textbf{or} as a ``true glissando'' following \textit{roughly} the contour indicated. 
             
-            %\vspace{15pt}
+            
             \begin{center}
             \glyphborder[width=.9\textwidth]{images/01-curvebreakdown.png}
             \end{center}
@@ -648,24 +648,24 @@ Here, context tells us that the empty set of brackets occupies one full measure 
 
         Trills are considered a proper subset of \gls{curve}s---namely curves which demonstrate rapid regular or irregular oscillation with a comparatively short ``wavelength.'' As such, there is no categorical distinction between a ``\gls{trill}'' and a complex curve. Unless otherwise noted, ``trill'' figures are not limited to half- or whole-step oscillation. The figure below demonstrates \textit{a rapid, louder trill, a crescendo on a single tone, then a slower, smoother trill}.
 
-            %\vspace{15pt}
+            
             \begin{center}
             \glyphborder[width=.6\textwidth]{images/08-trill2.png}
             \end{center}        
 
         Alternately, more conventional trills may be notated using the standard \textbf{\textit{tr}} figure, which may or may not be be accompanied by an interval/direction.
 
-            %\vspace{15pt}
+            
             \begin{center}
-            \glyphborder[width=.5\textwidth]{images/08-trill1.png}\circledfootnote{{play something like these rhythms; trill over the longest tone}}
+            \glyphborder[width=.5\textwidth]{images/08-trill1.png}\trans{{play something like these rhythms; trill over the longest tone}}
             \end{center}
 
         
 
 \newpage
 
-        \section[Dynamic indications]{Dynamic indications\\\small\textit{stroke thickness}}
-        %\vspace{15pt}
+        \section[Dynamic indications]{Dynamic indications: varying stroke thickness}
+        
 
         \begin{center}
             \glyphbordercontent{%
@@ -684,10 +684,10 @@ Here, context tells us that the empty set of brackets occupies one full measure 
         During instances where little to no dynamic information is given (extended sections of uniformly thin lines, for example), the player is encouraged to tweak local dynamics themselves to suit the playing environment. For instance, the figure below need not be performed \textbf{\textit{ppp}} unless directions make it clear.\footnote{This is primarily a caveat included to prevent the engraving of large scores from becoming excessively onerous. Uniformly thin lines are simply easier to render and therefore may stand in for a ``choose-your-own-dynamic'' indication in the absence of other instructions}
 
 
-            %\vspace{15pt}
+            
 
             \begin{center}
-                \glyphborder[width=.8\textwidth, angle=1.75]{images/02-thinline.png}\circledfootnote{long and short attacks on one pitch; two longer legato lines followed by several more attacks on a higher pitch}
+                \glyphborder[width=.8\textwidth, angle=1.75]{images/02-thinline.png}\trans{long and short attacks on one pitch; two longer legato lines followed by several more attacks on a higher pitch}
             \end{center}
             
 \newpage
@@ -708,7 +708,7 @@ Here, context tells us that the empty set of brackets occupies one full measure 
         }
         \end{center}
 
-    %\vspace{15pt}
+    
     
     % \begin{multicols}{2}
 
@@ -748,16 +748,16 @@ Here, context tells us that the empty set of brackets occupies one full measure 
 \newpage
 
 
-        \section[Timbral flux]{Timbral flux\\\small\textit{visual texture :: sonic texture}}
+    \section[Timbral flux]{Timbral flux: visual and sonic texture}
 
-        %\vspace{15pt}
+        
 
             \begin{center}
-            \glyphborder[width=.8\textwidth]{images/02-timbre1.png}\circledfootnote{{from left to right: change timbre on a single pitch at a fixed dynamic; change timbre on a single pitch while getting louder; change timbre in the middle of a short attack; change timbre twice over the course of this legato phrase}}
+            \glyphborder[width=.8\textwidth]{images/02-timbre1.png}\trans{{from left to right: change timbre on a single pitch at a fixed dynamic; change timbre on a single pitch while getting louder; change timbre in the middle of a short attack; change timbre twice over the course of this legato phrase}}
             \end{center}
 
             \begin{center}
-            \glyphborder[width=.6\textwidth]{images/02-timbre2.png}\circledfootnote{{change timbre multiple times throughout this long-tone}}
+            \glyphborder[width=.6\textwidth]{images/02-timbre2.png}\trans{{change timbre multiple times throughout this long-tone}}
             \end{center}
 
             
@@ -768,10 +768,8 @@ Here, context tells us that the empty set of brackets occupies one full measure 
 
 \newpage
 
-    \section[Simultaneity lines]{Simultaneity lines\\\small\textit{tying events together}}
+    \section[Simultaneity lines]{Simultaneity lines: tying events together}
     
-
-            
         In scored music which is often unmetered, \textbf{gestural simultaneity} becomes an important notational concern. When two events are meant to coincide, a dashed vertical \gls{line} connects those two events (be they the beginnings or endings or middles of gestures). These most often occur \textbf{between} two players, but will also occur in a single player's music to clarify an otherwise ambiguous passage. 
 
             \begin{center}
@@ -780,10 +778,10 @@ Here, context tells us that the empty set of brackets occupies one full measure 
 
         \noindent In the figure above, simultaneity lines are shown between the two players. The first player begin with a crescendo on a single tone with an abrupt cutoff; the second player begins \textbf{as soon as} the first player rests. After a short passage, both play a staccato attack together.
         
-            %\vspace{15pt}
+            
 
             \begin{center}
-            \glyphborder[width=.4\textwidth]{images/02-sim.png}\circledfootnote{{play this contour then (without a pause) jump down to a steady low pitch}}
+            \glyphborder[width=.4\textwidth]{images/02-sim.png}\trans{{play this contour then (without a pause) jump down to a steady low pitch}}
             \end{center}
         
        \noindent Without the dashed line in the figure above, it would be difficult to see at a glance if appreciable space exists between the low tone and the high one---thus a line is used to show that the high tone should follow immediately rather than after a short rest.
@@ -794,25 +792,21 @@ Here, context tells us that the empty set of brackets occupies one full measure 
 
 
             \begin{center}
-                \glyphborder[width=.7\textwidth]{images/08-star.png}\circledfootnote{Player 1 begins while Player 2 rests. Player 2 plays three short attacks at an unspecified position. Then, following a rest, both players re-enter simultaneously at the star.}
+                \glyphborder[width=.7\textwidth]{images/08-star.png}\trans{Player 1 begins while Player 2 rests. Player 2 plays three short attacks at an unspecified position. Then, following a rest, both players re-enter simultaneously at the star.}
             \end{center}
 
     \newpage
         
-    \section[Lollipops]{Lollipops\\\small\textit{representing changing parameters}}
-
-            %\vspace{15pt}
-            
-            \begin{center}
-            \glyphborder[width=.5\textwidth]{images/02-lolly1.png}\circledfootnote{{an undefined parameter increases while this simple pitch contour is performed}}
-            \hspace{15pt}
-            \glyphborder[width=.5\textwidth]{images/02-lolly2.png}\circledfootnote{{an undefined parameter oscillates on a single pitch in an in-this-manner bracket}}
-            \end{center}
-
+    \section[Lollipops]{Lollipops: representing changing parameters}
+    \label{sec:lollipops}
 
         ``\textbf{Lollipop}'' glyphs are used to indicate some \textbf{modifier}, i.e. a parameter which varies over the course of a gesture. As mentioned in Section 2.3 (\textbf{The box}), this parameter will usually be indicated in the southeast corner of the ``\gls{box}'' clef and may include things like bow position, airiness, noisiness, amount of mute, etc. Any parameter which could conceivably be represented with a single increasing and decreasing value could happily be encoded with \gls{lollipop}s:
-
-        %\vspace{15pt}
+            
+            \begin{center}
+            \glyphborder[width=.5\textwidth]{images/02-lolly1.png}\trans{{an undefined parameter increases while this simple pitch contour is performed}}
+            \hspace{15pt}
+            \glyphborder[width=.5\textwidth]{images/02-lolly2.png}\trans{{an undefined parameter oscillates on a single pitch in an in-this-manner bracket}}
+            \end{center}
 
         \begin{center}
             \glyphborder[width=.8\textwidth]{images/02-lolly4.png} 
@@ -820,36 +814,33 @@ Here, context tells us that the empty set of brackets occupies one full measure 
         
         The first lollipop will appear where the changing parameter should begin and a dotted line will indicate the \textbf{relative degree} of that technique. I typically use strictly linear progressions from one lollipop to the next rather than curved lines---although there is no hard-and-fast rule saying this must be the case. A dashed line without an accompanying terminator indicates that the parameter should remain at its last value until ``reset'' at the next gesture. In the absence of any further information in subsequent gestures, one should assume that the lollipop no longer holds.
 
-            %\vspace{15pt}
+            
             \begin{center}
-            \glyphborder[width=.8\textwidth]{images/02-lolly3.png}\circledfootnote{{a parameter decreases over the course of a legato phrase; the same parameter is specified again in the middle of a staccato passage and remains constant}}
+            \glyphborder[width=.8\textwidth]{images/02-lolly3.png}\trans{{a parameter decreases over the course of a legato phrase; the same parameter is specified again in the middle of a staccato passage and remains constant}}
             \end{center}
             
         As shown in the graphic below, two simultaneous changing parameters are relatively easy to deploy as long as both are clearly labelled. I suspect that attempting to represent more than two parameters would render a passage unwieldy and would perhaps best be saved for a different sort of compositional practice.
 
-            %\vspace{15pt}
+            
             \begin{center}
-            \glyphborder[width=.9\textwidth]{images/02-lolly5.png}\circledfootnote{{a single pitch has two parameters modified: noisiness is represented by the top lollipop since it's given in the box; vibrato is represented by the bottom lollypop and is defined by the tag to the left}}
+            \glyphborder[width=.9\textwidth]{images/02-lolly5.png}\trans{{a single pitch has two parameters modified: noisiness is represented by the top lollipop since it's given in the box; vibrato is represented by the bottom lollypop and is defined by the tag to the left}}
             \end{center}
 
     \newpage
 
-    \section[Relational signs]{Relational signs\\\small\textit{situationally dynamic improvisation}}
+    \section[Relational signs]{Relational signs: connecting players and gestures}
 
-        A specific class of glyphs, \textbf{\gls{relational signs}} indicate some relationship between the currently active material and some other material---either another player's or one's own. In the following list, I have attempted to encompass quite a wide range of relational possibilities without developing so many new symbols that they begin to tax the performer's recall abilities. For ease of execution, I recommend re-articulating the meanings of these glyphs in individual scores.
+        A specific class of glyphs, \textbf{\gls{relational signs}} indicate some relationship between the currently active material and some other material---either another player's or one's own. In the following list, I have attempted to encompass quite a wide range of relational possibilities without developing so many new symbols that they begin to tax the performer's recall abilities. 
+
 
         Below are some commonly-used relational signs:
 
     \begin{center}
-    \vspace{10pt}
+    \begingroup
+    \renewcommand{\arraystretch}{2}
     \footnotesize
-    \begin{tblr}{
-        width=\textwidth,
-        cells={valign=m, halign=l},
-        colspec={X[3] | X[3] | X[6]},
-        column{1}={halign=l},
-        column{2}={halign=l}
-        }
+    \begin{tabular}{@{} p{0.18\textwidth} p{0.18\textwidth} p{0.54\textwidth} @{}}
+        \toprule
         $\vcenter{\includegraphics[width=.1\textwidth]{images/03-match.png}}$ & \textit{match x} & match target's playing (in terms of pitch, rhythm, timbre, etc.) \\
         $\vcenter{\includegraphics[width=.1\textwidth]{images/03-ignore.png}}$ & \textit{ignore x} & perform as though target is not present \\
         $\vcenter{\includegraphics[width=.1\textwidth]{images/03-support.png}}$ & \textit{support x} & perform in such a way that target serves as the ``foreground'' to your ``background'' \\
@@ -857,50 +848,21 @@ Here, context tells us that the empty set of brackets occupies one full measure 
         $\vcenter{\includegraphics[width=.1\textwidth]{images/03-build.png}}$ & \textit{build upon x} & develop an idea presented by target (either another player or a previous gesture) \\
         $\vcenter{\includegraphics[width=.2\textwidth]{images/03-echo.png}}$ & \textit{echo x} & serve as an ``echo'' to target player or gesture \\
         $\vcenter{\includegraphics[width=.1\textwidth]{images/03-memorize.png}}$ & \textit{memorize x} & commit (some aspect(s) of) target to memory for later use \\
-        $\vcenter{\includegraphics[width=.1\textwidth]{images/03-recall.png}}$ & \textit{recall x} & recall that which was committed to memory in the ``memorize'' gesture
-    \end{tblr}
+        $\vcenter{\includegraphics[width=.1\textwidth]{images/03-recall.png}}$ & \textit{recall x} & recall that which was committed to memory in the ``memorize'' gesture \\
+        \bottomrule
+    \end{tabular}
+    \endgroup
     \end{center}
     
-    % \begin{tabular}{l|l}
-    %     $\vcenter{\includegraphics[width=.1\textwidth]{images/03-match.png}}$ & \textit{match x} \\
-    %     $\vcenter{\includegraphics[width=.1\textwidth]{images/03-ignore.png}}$ & \textit{ignore x} \\
-    %     $\vcenter{\includegraphics[width=.1\textwidth]{images/03-support.png}}$ & \textit{support x} \\
-    %     $\vcenter{\includegraphics[width=.1\textwidth]{images/03-dominate2.png}}$ & \textit{dominate x} \\
-    %     $\vcenter{\includegraphics[width=.1\textwidth]{images/03-build.png}}$ & \textit{build upon x} \\
-    %     $\vcenter{\includegraphics[width=.2\textwidth]{images/03-echo.png}}$ & \textit{echo x} \\
-    %     $\vcenter{\includegraphics[width=.1\textwidth]{images/03-memorize.png}}$ & \textit{memorize x} \\
-    %     $\vcenter{\includegraphics[width=.1\textwidth]{images/03-recall.png}}$ & \textit{recall x}
-    % \end{tabular}
-
-    % \begin{description}
-    % \item[Most commonly-used examples:]
-    % \end{description}
-    %     \begin{itemize}
-    %     \small
-    %         \item \textit{Match $x$} \hspace{10pt} $\vcenter{\includegraphics[width=.1\textwidth]{images/03-match.png}}$ \\ match target's playing (in terms of pitch, rhythm, timbre, etc.)
-    %         \item \textbf{Ignore ``x''} \hspace{10pt} $\vcenter{\includegraphics[width=.1\textwidth]{images/03-ignore.png}}$ \\ perform as though target is not present
-    %         \item \textbf{Support ``x''} \hspace{10pt} $\vcenter{\includegraphics[width=.1\textwidth]{images/03-support.png}}$ \\ perform in such a way that target serves as the ``foreground'' to your ``background''
-    %         \item \textbf{Dominate ``x''} \hspace{10pt} $\vcenter{\includegraphics[width=.1\textwidth]{images/03-dominate2.png}}$ \\ perform in such a way that target becomes ``background'' to your ``foreground''
-    %         \item \textbf{Build upon ``x''} \hspace{10pt} $\vcenter{\includegraphics[width=.1\textwidth]{images/03-build.png}}$ \\ develop an idea presented by target (either another player or a previous gesture)
-    %         \item \textbf{Echo ``x''} \hspace{10pt} $\vcenter{\includegraphics[width=.2\textwidth]{images/03-echo.png}}$ \\ serve as an ``echo'' to target player or gesture
-    %         \item \textbf{Memorize ``x''} \hspace{10pt} $\vcenter{\includegraphics[width=.1\textwidth]{images/03-memorize.png}}$ \\ commit (some aspect(s) of) target to memory for later use
-    %         \item \textbf{Recall ``x''} \hspace{10pt} $\vcenter{\includegraphics[width=.1\textwidth]{images/03-recall.png}}$ \\ recall that which was committed to memory in the ``memorize'' gesture
-    %     \end{itemize}
-
-    %\vspace{15pt}
-
 \noindent ...and here are some potentially powerful but as-yet-unused examples:
 
 \begingroup
-    \begin{center}
+\begin{center}
+\begin{minipage}{0.8\textwidth}
+\renewcommand{\arraystretch}{2}
         \footnotesize
-        \begin{tblr}{
-            width=\textwidth,
-            cells={valign=m, halign=l},
-            colspec={X[4] | X[4] | X[6]},
-            column{1}={halign=l},
-            column{2}={halign=l}
-            }
+        \begin{tabular}{@{} p{0.25\textwidth} p{0.22\textwidth} p{0.48\textwidth} @{}}
+            \toprule
             $\vcenter{\includegraphics[width=.25\textwidth]{images/03-louder.png}}$ & \textit{louder/softer} & \\
             $\vcenter{\includegraphics[width=.25\textwidth]{images/03-denser.png}}$ & \textit{denser/rarer} & \\
             $\vcenter{\includegraphics[width=.2\textwidth]{images/03-higher.png}}$ & \textit{higher/lower} & \\
@@ -911,67 +873,68 @@ Here, context tells us that the empty set of brackets occupies one full measure 
             $\vcenter{\includegraphics[width=.2\textwidth]{images/03-rhythmicize.png}}$ & \textit{rhythmicize x} & perform \textit{x} but now conforming to some sort of rhythmic grid \\
             $\vcenter{\includegraphics[width=.2\textwidth]{images/03-rubato.png}}$ & \textit{rubato x} & perform \textit{x} but now without regard to a rhythmic grid \\
             $\vcenter{\includegraphics[width=.15\textwidth]{images/03-multiply.png}}$ & \textit{multiply x} & take a fragmentary gesture \textit{x} and multiply it indefinitely \\
-            $\vcenter{\includegraphics[width=.15\textwidth]{images/03-counterpoint.png}}$ & \textit{counterpoint x} & provide counterpoint (rhythmically, pitch-wise, timbrally) to \textit{x}
-        \end{tblr}
-        \end{center}
+            $\vcenter{\includegraphics[width=.15\textwidth]{images/03-counterpoint.png}}$ & \textit{counterpoint x} & provide counterpoint (rhythmically, pitch-wise, timbrally) to \textit{x} \\
+            \bottomrule
+        \end{tabular}
+    \end{minipage}
+    \end{center}
 \endgroup
 
+\vspace{10pt}
+
+    Relational glyphs are most often placed at the bottom-left of an accompanying gesture and will use an \gls{arrow} to indicate its point of reference, be it another player's gesture or one's own previous material. If a new relational glyph overrides the previous one, the new glyph should be preceded by a cancellation mark (a diagonal line through the glyph).
 
     \newpage
     
     In context, the relational sign will be placed at the bottom-left of an accompanying gesture and will use an \gls{arrow} to indicate its point of reference, be it another player's gesture or one's own.
 
             \begin{center}
-            \glyphborder[width=.6\textwidth]{images/05-relation1.png}\circledfootnote{{build upon previous gesture}}
+            \glyphborder[width=.6\textwidth]{images/05-relation1.png}\trans{{build upon previous gesture}}
             \end{center}
 
             \begin{center}
-            \glyphborder[width=.4\textwidth]{images/05-relation2.png}\circledfootnote{{ignore other player's gesture}}
+            \glyphborder[width=.4\textwidth]{images/05-relation2.png}\trans{{ignore other player's gesture}}
             \end{center}
 
             \begin{center}
-            \glyphborder[width=.4\textwidth]{images/05-relation3.png}\circledfootnote{{echo other player's gesture}}
+            \glyphborder[width=.4\textwidth]{images/05-relation3.png}\trans{{echo other player's gesture}}
             \end{center}
 
 \newpage
 
     \section{Other global signs}
 
-        \subsection[Incorporating pitched material]{Incorporating pitched material\\\small\textit{notational hybridity}}
+        \subsection[Incorporating pitched material]{Incorporating pitched material}
 
-        %\vspace{15pt}
+            A central goal of this system is a more-or-less seamless integration of traditionally notated materials with new open glyphs. \textbf{\Gls{Pitched material}} may be incorporated in several ways. Rarely, notation may be included which is fully rendered with meter, tempo, dynamics, etc. However, more commonly, several of these factors are omitted in favor of fixed pitches to be played in a given order but with no rhythmic/durational information. Other times, no order is specified.
 
             \begin{center}
-            \glyphborder[width=.8\textwidth]{images/06-Artboard 3.png}\circledfootnote{{over a D major chord play a falling gesture followed by three staccato attacks, then play something like the given chords, then play this accelerando gesture on A3}}
-            \end{center}        
-
-            A central goal of this system is a more-or-less seamless integration of traditionally notated materials with new open glyphs.
-            
-           \textbf{\Gls{Pitched material}} may be incorporated in several ways. Rarely, notation may be included which is fully rendered with meter, tempo, dynamics, etc. However, more commonly, several of these factors are omitted in favor of fixed pitches to be played in a given order but with no rhythmic/durational information. Other times, no order is specified.
+            \glyphborder[width=.8\textwidth]{images/06-Artboard 3.png}\trans{{over a D major chord play a falling gesture followed by three staccato attacks, then play something like the given chords, then play this accelerando gesture on A3}}
            
-                \begin{center}
-                \glyphborder[width=.8\textwidth]{./images/non_specific_pitches.png}\circledfootnote{{play something using these pitches with no particular rhythm}}
-                \end{center}
+            \glyphborder[width=.5\textwidth]{./images/non_specific_pitches.png}\trans{{play something using these pitches with no particular rhythm}}
+            \end{center}
             
            In instances where rhythms are given, these rhythms are to be performed proportionally unless otherwise noted.
 
             \begin{center}
-            \glyphborder[width=.8\textwidth]{images/06-Artboard 2.png}\circledfootnote{{play something like these pitches/rhythms proportionally (not necessarily in sync with anyone else)}}
+            \glyphborder[width=.8\textwidth]{images/06-Artboard 2.png}\trans{{play something like these pitches/rhythms proportionally (not necessarily in sync with anyone else)}}
             \end{center}
 
+            \newpage
 
-        \subsection{``Relative'' rests}
 
-            %\vspace{15pt}
-            \begin{center}
-            \glyphborder[width=.6\textwidth]{images/03-rest.png}\circledfootnote{{one interrupted pitch followed by a long rest}}
-            \end{center}        
+        \subsection{Relative rests}
 
             Often, players will see eighth-, quarter-, half-, and whole-rests ``floating'' amidst other open glyphs. Unless otherwise marked, these \textbf{floating rests} are to be understood as ``psychological'' proportional indicators rather than as concrete durational values---i.e. eighth = quite short rest, quarter = longer rest, whole = quite long rest, etc.
+
             
-            %\vspace{15pt}
             \begin{center}
-            \glyphborder[width=.9\textwidth]{images/03-rest2.png}\circledfootnote{{play this gesture with rests of various proportional lengths}}
+            \glyphborder[width=.6\textwidth]{images/03-rest.png}\trans{{one interrupted pitch followed by a long rest}}
+            \end{center}        
+            
+            
+            \begin{center}
+            \glyphborder[width=.9\textwidth]{images/03-rest2.png}\trans{{play this gesture with rests of various proportional lengths}}
             \end{center}        
 
 \newpage
@@ -980,101 +943,93 @@ Here, context tells us that the empty set of brackets occupies one full measure 
 
             When a repeat is used to enclose a gesture, the player ought to loop that gesture (to the best of their ability) rather than extend and develop it. The duration of the repeated gesture will be (as usual) denoted by the amount of territory enclosed by the repeats, while the duration of the overall repetition will be indicated with a simple \gls{arrow} or a strict \textbf{number of repeats (2x, 3x, etc.)}.
 
-            %\vspace{15pt}
+            
             \begin{center}
-            \glyphborder[width=.5\textwidth]{images/03-repeat1.png}\circledfootnote{{repeat this long-short-long figure}}
+            \glyphborder[width=.5\textwidth]{images/03-repeat1.png}\trans{{repeat this long-short-long figure}}
             \end{center}
 
-            %\vspace{15pt}
+            
             \begin{center}
-            \glyphborder[width=.5\textwidth]{images/03-repeat2.png}\circledfootnote{{``in the manner of'' a repetition of this staccato-then-single-tone phrase}}
+            \glyphborder[width=.5\textwidth]{images/03-repeat2.png}\trans{{(in the manner of) a repetition of this staccato-then-single-tone phrase}}
             \end{center}
 
 \newpage
             
-        \subsection[Transition arrow]{Transition arrow\\\small\textit{gradual becoming}}
+        \subsection[Transition arrow]{Transition arrows: gradual becoming}
 
             This thick, more elaborate \gls{arrow} is used to indicate that a player should \textbf{transition gradually} (rather than jump-cut) from one ``sound world'' into another using whatever means they deem appropriate. The length of the arrow indicates the proportional duration of the transition period.
 
-            %\vspace{15pt}
+            
             \begin{center}
-            \glyphborder[width=.9\textwidth]{images/03-transition.png}\circledfootnote{{transition rather quickly from a mix of longer and shorter attacks to consistent short attacks in a narrow pitch band}}
+            \glyphborder[width=.9\textwidth]{images/03-transition.png}\trans{{transition rather quickly from a mix of longer and shorter attacks to consistent short attacks in a narrow pitch band}}
             \end{center}  
+
+            Play need not be continuous during this transition period; rather, the player should isolate the salient parameter or parameters of the initial and final gestures and focus on gradually transitioning between them.
 
 \newpage
             
-        \subsection[``Grid'' indications]{``Grid'' indications\\\small\textit{rhythmic/arrhythmic}}
+\subsection[The rhythmic grid]{The rhythmic grid}
 
-            These symbols are used to indicate that improvisation should occur either \textbf{metronomically} (``on a grid''---i.e. using an imagined isochronous pulse governing performed rhythms),
+These symbols are used to indicate that improvisation should occur either \textbf{metronomically} (``on a grid''---i.e. using an imagined isochronous pulse governing performed rhythms), \textbf{semi-metronomically} (semi-pulsed), or \textbf{unmetered}.
             
-            %\vspace{15pt}
+            
             \begin{center}
             \glyphborder[width=.1\textwidth]{images/08-met1.png}
-            \end{center}  
-
-\noindent \textbf{semi-metronomically} (semi-pulsed),
-
-            %\vspace{15pt}
-            \begin{center}
+            \hspace{0.5cm}
             \glyphborder[width=.12\textwidth]{images/08-met2.png}
-            \end{center}  
-
-
-\noindent or \textbf{unmetered}. 
-
-            %\vspace{15pt}
-            \begin{center}
+            \hspace{0.5cm}
             \glyphborder[width=.12\textwidth]{images/08-met3.png}
             \end{center}  
             
 As a general rule, gestures are to be understood as unmetered unless otherwise noted. Furthermore, two players simultaneously playing \textbf{metronomic} gestures \textit{need not} match tempos unless the ``match ``x'''' glyph is also present. Rather, they should each strive to maintain a consistent, independent tempo until unmetered play resumes.
+As usual, an arrow will be used to indicate the point of reference for the \textbf{match x}, \textbf{ignore x}, etc. relational signs.
 
-            %\vspace{15pt}
             \begin{center}
-            \glyphborder[width=.12\textwidth]{images/08-met4.png}\footnote{As usual, an arrow will be used to indicate the point of reference for the \textbf{match x} relational sign.}
+            \glyphborder[width=.12\textwidth]{images/08-met4.png}
             \end{center}  
 
 \newpage
             
-        \subsection{``Interruptions''}
+        \subsection{Interruptions}
 
-            Two symbols are used to indicate \textbf{interruptions} of the ongoing flow of a gesture.
+            Two symbols are used to indicate \textbf{interruptions} of the ongoing flow of a gesture. This glyph...
 
             \begin{center}
             \glyphborder[width=.1\textwidth]{images/05-interruption3.png} 
             \end{center}
             
-            \noindent indicates an \gls{interruption} ``\textbf{in time}'' which interjects sound of the player's choosing in such a way that the proportionality of the gesture group is unaltered---often a sudden burst unrelated to the rest of the music in question.
+            ...indicates an \gls{interruption} ``\textbf{in time}'' which interjects sound of the player's choosing in such a way that the proportionality of the gesture group is unaltered---often a sudden burst unrelated to the rest of the music in question.
             
-            On the other hand, 
+            On the other hand, this glyph...
             
             \begin{center}
             \glyphborder[width=.15\textwidth]{images/05-interruption4.png}
             \end{center}
             
-            \noindent indicates an interruption ``\textbf{out of time}''---i.e. of open duration, breaking not only the sonic flow, but also the \textit{temporal} flow of the gesture.
+            ...indicates an interruption ``\textbf{out of time}''---i.e. of open duration, breaking not only the sonic flow, but also the \textit{temporal} flow of the gesture. 
 
 \setcounter{footnote}{0}
 \chapter{Family-specific glyphs}
 \label{ch:family-specific}
+
 \newpage
 
-    \section{Polyphonic Instruments}
+    \section{Polyphonic instruments}
 
         \subsection{Chords and chord-density}
 
         Homophonic gestures (that is, gestures which are primarily composed of vertically-stacked harmonies rather than monophonic single-note lines) present a unique challenge to notation in this scheme, given the scheme's reliance on essentially one-dimensional simple linear figures. As such, generically homophonic material is shown using \textbf{striated dots and contours} which are \gls{texture}d with \textbf{parallel, left-to-right oriented bands}.
         
             \begin{center}
-            \glyphborder[width=.85\textwidth]{images/04-chords.png}\circledfootnote{{from left to right: long, chordal attack, quite loud; legato figure composed of chords; three short chordal attacks; wider-range chordal legato figure}}
+            \glyphborder[width=.85\textwidth]{images/04-chords.png}\trans{{from left to right: long, chordal attack, quite loud; legato figure composed of chords; three short chordal attacks; wider-range chordal legato figure}}
             \end{center}  
             
     As usual, the approximate range of the gesture is given by its position on the y-axis. Note that the striations themselves do not give any particular information as to the intervallic content or chord voicing---these properties, if constrained at all, will be given elsewhere; usually in the accompanying \gls{box} or attached to the gesture with a flag. To this end, a widely-spaced staffless half-note \gls{chord} indicates that the player should favor more open voicings. Converseley, a clustered half-note chord points to tighter, closed voicings.
 
             \begin{center}
-            \glyphborder[width=.3\textwidth]{images/04-chords2.png}\circledfootnote{{descending chordal legato passage primarily using ``closed'' or ``cluster'' voicings}}
+            \glyphborder[width=.3\textwidth]{images/04-chords2.png}\trans{{descending chordal legato passage primarily using ``closed'' or ``cluster'' voicings}}
             \hspace {15pt}
-            \glyphborder[width=.2\textwidth]{images/04-chords3.png}\circledfootnote{{loud-soft-loud gesture using ``open'' (widely spaced) voicings}}
+            \glyphborder[width=.2\textwidth]{images/04-chords3.png}\trans{{loud-soft-loud gesture using ``open'' (widely spaced) voicings}}
             \end{center}  
 
 \newpage
@@ -1085,30 +1040,30 @@ As a general rule, gestures are to be understood as unmetered unless otherwise n
     
         \subsection{Harmonics}
 
-            \begin{center}
-            \glyphborder[width=.8\textwidth]{images/04-harmonics.png}\circledfootnote{{plain, unbroken harmonics}} 
-            \hspace {15pt}
-            \glyphborder[scale=0.3]{images/04-harmonics2.png}\circledfootnote{{a ``morse-code'' ---i.e. mixed long and short attacks---harmonic}}
-            \end{center} 
-
             Harmonics are indicated by a \textbf{diamond} glyph preceding a duration line. As \gls{harmonic}s tend to be considerably higher than stopped pitches, the harmonic figure in essence temporarily overrides the prescribed range and should be understood to be high- or low-pitch in relation to other harmonics present.
+
+            \begin{center}
+            \glyphborder[width=.6\textwidth]{images/04-harmonics.png}\trans{{plain, unbroken harmonics}} 
+            \hspace {15pt}
+            \glyphborder[width=.4\textwidth]{images/04-harmonics2.png}\trans{{a ``morse-code'' ---i.e. mixed long and short attacks---harmonic}}
+            \end{center} 
 
 \newpage
             
         \subsection{Double-stops et al.}
 
-            \begin{center}
-            \glyphborder[width=0.5\textwidth]{images/04-doublestops.png}\circledfootnote{{a double stop on a single pitch which is interrupted toward the end of the gesture}} 
-            \hspace {15pt}
-            \glyphborder[width=0.4\textwidth]{images/04-doublestops2.png}\circledfootnote{{a double stop which begins and returns to a single pitch}}
-            \end{center}
-
             Double/triple/etc. stops are, predictably, indicated by \textbf{multiple concurrent duration lines}. They may move in parallel or in contrary motion and may feature distinct attack envelopes, etc.
 
             \begin{center}
-            \glyphborder[width=0.4\textwidth]{images/04-doublestops3.png}\circledfootnote{{a double stop which peaks in intensity toward the middle of the gesture}}
+            \glyphborder[width=0.5\textwidth]{images/04-doublestops.png}\trans{{a double stop on a single pitch which is interrupted toward the end of the gesture}} 
             \hspace {15pt}
-            \glyphborder[width=0.3\textwidth]{images/04-doublestops4.png}\circledfootnote{{a triple stop using a C-augmented pitch set which rapidly ascends and gets louder}}
+            \glyphborder[width=0.4\textwidth]{images/04-doublestops2.png}\trans{{a double stop which begins and returns to a single pitch}}
+            \end{center}
+
+            \begin{center}
+            \glyphborder[width=0.4\textwidth]{images/04-doublestops3.png}\trans{{a double stop which peaks in intensity toward the middle of the gesture}}
+            \hspace {15pt}
+            \glyphborder[width=0.3\textwidth]{images/04-doublestops4.png}\trans{{a triple stop using a C-augmented pitch set which rapidly ascends and gets louder}}
             \end{center}
 
 \newpage
@@ -1122,14 +1077,14 @@ As a general rule, gestures are to be understood as unmetered unless otherwise n
             \begin{center}
             \glyphborder[width=0.3\textwidth]{images/04-multiphonics2.png}
             \hspace {15pt}
-            \glyphborder[width=0.3\textwidth]{images/04-multiphonics3.png}\circledfootnote{{two discrete multiphonics in approximately the same register and with the same dynamic}}
+            \glyphborder[width=0.3\textwidth]{images/04-multiphonics3.png}\trans{{two discrete multiphonics in approximately the same register and with the same dynamic}}
             \end{center}
 
-            \noindent In some instances, unspecified but \textbf{discrete} multiphonics are desired. In this case, the initial glyph will be \gls{texture}d using ``timbral change'' glyph textures. These distinctions are local to the gesture, similar to changes in \textbf{timbre (section 2.7)}---i.e. the multiphonic signified by the hatched symbol need not be consistent across the entire piece; only until the \textbf{box} clef indicates the start of a new gesture.
+            \noindent In some instances, unspecified but \textbf{discrete} multiphonics are desired. In this case, the initial glyph will be \gls{texture}d using ``timbral change'' glyph textures. These distinctions are local to the gesture, similar to changes in \textbf{timbre}---i.e. the multiphonic signified by the hatched symbol need not be consistent across the entire piece; only until the \textbf{box} clef indicates the start of a new gesture.
 
-            %\vspace{15pt}
+            
             \begin{center}
-            \glyphborder[width=.5\textwidth]{images/04-multiphonics4.png}\circledfootnote{{three discrete multiphonics at different dynamics}}
+            \glyphborder[width=.5\textwidth]{images/04-multiphonics4.png}\trans{{three discrete multiphonics at different dynamics}}
             \end{center}
             
 \newpage
@@ -1138,13 +1093,14 @@ As a general rule, gestures are to be understood as unmetered unless otherwise n
 
         \subsection{Mutes}
 
-            \begin{center}
-            \glyphborder[width=.9\textwidth]{images/mutelolly.png}\circledfootnote{{interrupted attack(s) on a single pitch while opening/closing the mute}}
-            \end{center}
-
             The use of mutes is certainly permitted/encouraged in the absence of other instructions. Sometimes, though, the use of a plunger-style (\textbf{dynamic}) mute is called for expressly in the score in the \textbf{southeast} corner of \textbf{the \gls{box}} (``+mute''), in which case a \textbf{\gls{lollipop}} will indicate the extent/velocity of mute movement.
 
             Other (\textbf{static}) mutes will be indicated using text as usual.
+
+            \begin{center}
+            \glyphborder[width=.75\textwidth]{images/mutelolly.png}\trans{{interrupted attack(s) on a single pitch while opening/closing the mute}}
+            \end{center}
+
 \newpage
 
     \section{Percussion}
@@ -1156,19 +1112,15 @@ As a general rule, gestures are to be understood as unmetered unless otherwise n
 
             In the case of the drum kit, for instance, one might include a small diagram as part of the ``clef'' figure which includes explicit mapping-regions illustrated by \textbf{pictographic instruments}.
 
-          %\vspace{15pt}
-
-
           In the figure below: typical trap kit components loosely arranged according to spectral content. Top to bottom: crash/splash; ride; snare; tom; bass. These may be changed to suit intended trap kit setup.
 
             \begin{center}
             \glyphborder[width=.1\textwidth]{images/05-drums.png}
             \end{center}
 
-
 \noindent Here shown in context:
 
-            %\vspace{15pt}
+            
             \begin{center}
             \glyphborder[width=.75\textwidth]{images/05-drums2.png}\footnote{The ``clef'' illustrates approximate regions of play corresponding to height of the line. In this case, the gesture may be interpreted as \textit{ascending in spectral space while playing low attacks (probably on the kick drum); then, open improvisation in the upper register}}
             \end{center}
@@ -1183,6 +1135,45 @@ As a general rule, gestures are to be understood as unmetered unless otherwise n
             \end{center}
 
 \newpage
+
+\chapter{Further examples}
+\label{ch:further-examples}
+\newpage
+
+\section{\textit{Q-tet} (2022/3) for jazz quartet}
+
+\begin{center}
+
+    \glyphborder[width=.85\textwidth]{images/ex01-qtet.png}\trans{the drummer plays circular gestures across the middle register of the kit, punctuating occasionally with quiet kicks; transitions to doubles across the kit which gradually accelerate; a flurry on kicks and low toms}
+
+    \glyphborder[width=.65\textwidth]{images/ex02-qtet.png}\trans{the drummer plays rapid gestures on cymbals, hi-hat, and snare while modulating an undefined parameter (perhaps timbre or dynamic)}
+
+    \glyphborder[width=.85\textwidth]{images/ex03-qtet.png}\trans{the bassist plays loud but rapidly decaying attacks in the low register with pairs of harmonics ringing out above; rapid tremolo gestures separated by rests, all slowing gradually}
+
+\end{center}
+
+\section{\textit{High Structure Carbon Black} (2023) for solo saxophone}
+
+\begin{center}
+    \glyphborder[width=.8\textwidth]{images/ex05-hscb.png}\trans{the saxophonist plays brief fixed melodic cell, an (in the manner of) aggressive legato gesture (recorded as gesture~\delta), another cell, then a series of separated and legato attacks arcing upward}
+
+    \glyphborder[width=.8\textwidth]{images/ex04-hscb.png}\trans{the saxophonist plays a longer fixed phrase, then a passage on (something like) an E$\Delta$ chord; the player is asked to build upon the recorded gesture~\delta from earlier in the piece}
+\end{center}
+
+
+\section{\textit{W/M} (2023) for variable ensemble}
+
+\begin{center}
+    \includegraphics[width=.95\textwidth]{images/wm02.png}\trans{four semi-fixed gestures comprising short and long attacks at various pitch heights, as well as a few short legato attacks; the first three gestures feature interruptions, either in time or out-of-time}
+\end{center}
+
+\section{``Interlude I'' for clarinet and kamancheh}
+
+\begin{center}
+    \glyphborder[width=.95\textwidth]{images/ex06-interlude.png}
+\end{center}
+
+\section{\textit{Nemat-Space} (2023) for two multi-instrumentalists}
 
 \chapter{Room for development}
 \label{ch:development}
@@ -1200,9 +1191,11 @@ As a general rule, gestures are to be understood as unmetered unless otherwise n
     \subsection{Movement}
     Notations for movement and gesture in dance and theater (Labanotation, Benesh Movement Notation, Eshkol-Wachman Movement Notation, etc.) are well-established (if sparsely used), but were not designed to emphasize improvisation or simultaneous music-and-movement performance. Otto-Glyphs lends itself to adaptation for movement-based performance, particularly in cases where performers move and play simultaneously.
 
-%        \subsection{A more robust tablature}
+    % \subsection{Kinetic notations}
 
-%        [forthcoming]
+    % \subsection{Color}
+
+    % \subsection{A more robust tablature}
 
 \clearpage
 
