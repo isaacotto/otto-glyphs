@@ -123,6 +123,8 @@
 \renewcommand\footnote[1]{%
 \oldfootnote{\enspace #1}}
 
+% The following command provides circled footnote marks. The circles, however, currently vary in size with the size of the number inside. I would like the circles to all be the same size (large enough to accommodate a 2-digit number). Can you help me with this?
+
 % Create new command for ``translation'' footnotes:
 \newcommand{\trans}[1]{\circledfootnote{{#1}}}
 
@@ -130,7 +132,7 @@
 \makeatletter
 % helper: draw a circle around arbitrary text (works with multi-digit numbers)
 \newcommand{\circlednum}[1]{%
-  \tikz[baseline=(char.base)] \node[draw, circle, inner sep=0.6pt, line width=0.4pt, font=\tiny] (char) {#1};%
+  \tikz[baseline=(char.base)] \node[draw, circle, minimum size=1.4em, inner sep=0pt, line width=0.4pt, font=\tiny] (char) {#1};%
 }
 
 % main command: prints a circled superscript at the point of use,
@@ -301,7 +303,7 @@
 {
     name=cue,
     description={Suggested cues are indicated by stars above events or parts of events which are to occur simultaneously.},
-    user1={\glyphborder[width=1cm]{images/08-star_alone.png}}
+    user1={\glyphborder[width=1cm]{images/08-star_alone.png} \hspace*{1cm} \glyphborder[width=3cm]{images/08-star.png}},
 }
 
 \newglossaryentry{trill}
